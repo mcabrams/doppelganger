@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+
+  client:
+    build:
+      # Context is this directory instead of ./client because Dockerfile
+      # needs to copy schema.graphql file which is located in ./server
+      context: .
+      dockerfile: ./client/Dockerfile.local
+    command: npm run start
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+      - ./server/src/schema:/app/schema  # Need to keep schema up to date based off of server
+      - /app/src/generated
+      - /app/build
+    tty: true
+    stdin_open: true
+    ports:
+      - 8080:8080
+
+  server:
+    build:
+      context: ./server
+    command:
+      - /bin/sh
+      - -c
+      - |
+        ./wait-for.sh prisma:4466
+        ./node_modules/.bin/prisma deploy
+        yarn start
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    tty: true
+    stdin_open: true
+    ports:
+      - 4000:4000
+
+  database:
+    image: 'postgres:10.4'
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: postgresdb
+      POSTGRES_USER: postgresadmin
+      POSTGRES_PASSWORD: admin123
+
+  prisma:
+    image: 'prismagraphql/prisma:1.36-alpha'
+    ports:
+      - 4467:4466
+    environment:
+      PRISMA_CONFIG: |
+        port: 4466
+        managementApiSecret: Hfu26YYXw3DJrx
+        databases:
+          default:
+            connector: postgres
+            host: database
+            port: 5432
+            user: postgresadmin
+            password: admin123
+            migrations: true

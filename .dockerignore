@@ -1,0 +1,5 @@
+# This dockerignore is here rather than client/ because docker-compose.yml context
+# depends on this directory, not client/
+node_modules
+generated
+schema.graphql

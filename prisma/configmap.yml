@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prisma-configmap
+  namespace: soundproud
+  labels:
+    stage: production
+    name: prisma
+    app: prisma
+data:
+  PRISMA_CONFIG: |
+    port: 4466
+    managementApiSecret: Hfu26YYXw3DJrx
+    databases:
+      default:
+        connector: postgres
+        host: database
+        port: 5432
+        user: postgresadmin
+        password: admin123
+        migrations: true
