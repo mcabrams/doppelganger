@@ -4,16 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate": "./node_modules/.bin/graphql-codegen",
-    "generate:watch": "./node_modules/.bin/graphql-codegen --watch",
+    "generate": "graphql-codegen",
+    "generate:watch": "graphql-codegen --watch",
     "generate-env-config": "chmod +x ./env.sh && ./env.sh && cp env-config.js ./public/",
-    "lint": "./node_modules/.bin/eslint --ext .js,.ts,.tsx src/",
-    "lint:fix": "./node_modules/.bin/eslint --ext .js,.ts,.tsx src/ --fix",
-    "start": "./node_modules/.bin/concurrently \"npm run generate-env-config && ./node_modules/.bin/webpack-dev-server --progress --color --mode development --config webpack.config.development.js\" \"npm run generate:watch\"",
+    "lint": "eslint --ext .js,.ts,.tsx src/",
+    "lint:fix": "eslint --ext .js,.ts,.tsx src/ --fix",
+    "start": "concurrently \"npm run generate-env-config && webpack-dev-server --progress --color --mode development --config webpack.config.development.js\" \"npm run generate:watch\"",
     "prebuild": "npm run generate",
     "build": "chmod +x ./env.sh && ./env.sh && cp env-config.js ./public/ && webpack --color --mode production --config webpack.config.production.js",
     "upgrade-interactive": "npm-check --update",
-    "test": "./node_modules/.bin/jest"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
