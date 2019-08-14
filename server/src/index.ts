@@ -15,12 +15,6 @@ import * as User from '@src/resolvers/User';
 import * as Vote from '@src/resolvers/Vote';
 import { Context } from '@src/types';
 
-type Link = {
-  id: string;
-  description: string;
-  url: string;
-}
-
 const typeDefs = importSchema(__dirname + '/schema/schema.graphql');
 
 // Provide resolver functions for your schema fields
