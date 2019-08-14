@@ -13,7 +13,6 @@ services:
       - ./client:/app
       - /app/node_modules
       - ./server/src/schema:/app/schema  # Need to keep schema up to date based off of server
-      - /app/src/generated
       - /app/build
     tty: true
     stdin_open: true
