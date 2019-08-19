@@ -1,7 +1,7 @@
 import { Prisma } from './generated/prisma-client';
 import { Request } from 'express';
 
-export type Context = {
+export interface Context {
   prisma: Prisma;
   req: Request;
 }

@@ -1,6 +1,7 @@
-import { User } from '@src/generated/prisma-client';
-import { Context } from '@src/types';
+import { UserResolvers } from '@src/generated/graphql';
 
-export const links = (parent: User, args: null, context: Context) => {
-  return context.prisma.user({ id: parent.id }).links();
+export const User: UserResolvers = {
+  links: (parent, args, context) => {
+    return context.prisma.user({ id: parent.id }).links();
+  },
 };

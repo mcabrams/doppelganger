@@ -1,10 +1,10 @@
-import { Link } from '@src/generated/prisma-client';
-import { Context } from '@src/types';
+import { LinkResolvers } from '@src/generated/graphql';
 
-export const postedBy = (parent: Link, args: null, context: Context) => {
-  return context.prisma.link({ id: parent.id }).postedBy();
-};
-
-export const votes = (parent: Link, args: null, context: Context) => {
-  return context.prisma.link({ id: parent.id }).votes();
+export const Link: LinkResolvers = {
+  postedBy: (parent, args, context) => {
+    return context.prisma.link({ id: parent.id }).postedBy();
+  },
+  votes: (parent, args, context) => {
+    return context.prisma.link({ id: parent.id }).votes();
+  },
 };

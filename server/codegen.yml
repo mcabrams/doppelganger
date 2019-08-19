@@ -1,0 +1,17 @@
+overwrite: true
+schema: "./src/schema/schema.graphql"
+documents: null
+generates:
+  src/generated/graphql.ts:
+    config:
+      contextType: ../types#Context
+      useIndexSignature: true
+      maybeValue: "T | undefined | null"
+      mappers:
+        Link: ./prisma-client#Link
+        User: ./prisma-client#User
+        Vote: ./prisma-client#Vote
+    plugins:
+      - add: "/* THIS IS A GENERATED FILE - DO NOT MODIFY */"
+      - "typescript"
+      - "typescript-resolvers"

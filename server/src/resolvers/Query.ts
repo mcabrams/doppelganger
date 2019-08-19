@@ -1,46 +1,41 @@
-import { Context } from '@src/types';
-import {
-  LinkOrderByInput, LinkWhereUniqueInput,
-} from '@src/generated/prisma-client';
+import { QueryResolvers } from '@src/generated/graphql';
 
-type FeedArgs = {
-  filter?: string;
-  skip?: number;
-  first?: number;
-  orderBy?: LinkOrderByInput;
-};
-
-export const feed = async (root: any, args: FeedArgs, context: Context) => {
+const feed: QueryResolvers['feed'] = async (root, args, context) => {
   const where = args.filter ? {
     OR: [
       {description_contains: args.filter},
       {url_contains: args.filter},
     ],
   } : {};
-  const links = await context.prisma.links({
-    where,
-    first: args.first,
-    skip: args.skip,
-    orderBy: args.orderBy,
-  });
+  // @ts-ignore TODO: remove once https://github.com/prisma/prisma/issues/3774 is fixed
+  const links = await context.prisma.links({where, first: args.first, skip: args.skip, orderBy: args.orderBy});
 
   const count = await context.prisma
-    .linksConnection({
-      where,
-    })
-    .aggregate()
-    .count();
+      .linksConnection({
+        where,
+      })
+      .aggregate()
+      .count();
 
   return {
     links,
     count,
   };
-};
+}
 
-export const link = (
-  parent: null, args: LinkWhereUniqueInput, context: Context,
-) => {
-  return context.prisma.link({
+const link: QueryResolvers['link'] = async (parent, args, context) => {
+  const link = await context.prisma.link({
     id: args.id,
   });
+
+  if (!link) {
+    throw new Error(`Link with id ${args.id} does not exist`);
+  }
+
+  return link;
+};
+
+export const Query: QueryResolvers = {
+  feed,
+  link,
 };

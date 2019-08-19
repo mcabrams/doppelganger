@@ -5,20 +5,21 @@ import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import compression from 'compression';
 
+import { Resolvers } from '@src/generated/graphql';
 import { prisma } from '@src/generated/prisma-client';
 // TODO: Some way to not have to repeat all these?
-import * as Query from '@src/resolvers/Query';
-import * as Mutation from '@src/resolvers/Mutation';
-import * as Link from '@src/resolvers/Link';
-import * as Subscription from '@src/resolvers/Subscription';
-import * as User from '@src/resolvers/User';
-import * as Vote from '@src/resolvers/Vote';
+import { Query } from '@src/resolvers/Query';
+import { Mutation } from '@src/resolvers/Mutation';
+import { Link } from '@src/resolvers/Link';
+import { Subscription } from '@src/resolvers/Subscription';
+import { User } from '@src/resolvers/User';
+import { Vote } from '@src/resolvers/Vote';
 import { Context } from '@src/types';
 
 const typeDefs = importSchema(__dirname + '/schema/schema.graphql');
 
 // Provide resolver functions for your schema fields
-const resolvers = {
+const resolvers: Resolvers = {
   Query,
   Mutation,
   Subscription,
@@ -27,7 +28,7 @@ const resolvers = {
   Vote,
 };
 
-const schema = makeExecutableSchema({ typeDefs, resolvers })
+const schema = makeExecutableSchema<Context>({ typeDefs, resolvers });
 
 const server = new ApolloServer({
   schema,
