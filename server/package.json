@@ -9,6 +9,7 @@
     "start": "concurrently \"npm run generate:watch\" \"npm run serve\"",
     "debug": "dotenv -- nodemon -L -e ts,graphql -x ts-node --inspect -r tsconfig-paths/register src/index.ts",
     "build": "rimraf dist && tsc",
+    "pretest": "prisma deploy -e .test.env",
     "test": "jest"
   },
   "dependencies": {

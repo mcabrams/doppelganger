@@ -3,11 +3,10 @@ version: '3'
 services:
 
   server-test:
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/generated/  # Don't want to overwrite what's generated via
-                                 # the non-test environment.
+    # Pretty much identical to server-test in docker-compose.test.yml with
+    # exception of no volumes
+
+    # Should be same as server-test & server below this point
     ports:
       - 4001:4000
       - 4003:4003
@@ -27,3 +26,4 @@ services:
       - prisma
     tty: true
     stdin_open: true
+

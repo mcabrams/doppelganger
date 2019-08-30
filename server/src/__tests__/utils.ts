@@ -21,7 +21,7 @@ export const startTestServer = async (server: ApolloServer) => {
   const theServer = await httpServer.listen({ port: 4003 });
 
   const link = new HttpLink({
-    uri: 'http://server-test:4003/graphql',
+    uri: 'http://localhost:4003/graphql',
   });
 
   const executeOperation = ({ query, variables = {} }: ExecuteOperationArgs) => (
