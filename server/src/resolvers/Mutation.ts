@@ -51,7 +51,7 @@ export const Mutation: MutationResolvers = {
     });
   },
   updateLink: (parent, args, context) => {
-    const userId = getUserId(context);
+    getUserId(context);
     const { id, ...updatedLinkArgs } = args;
 
     return context.prisma.updateLink({

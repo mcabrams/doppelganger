@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+
+  server-test:
+    build:
+      context: ./server
+    command:
+      - /bin/sh
+      - -c
+      - |
+        ./wait-for.sh prisma:4466
+        ./node_modules/.bin/prisma deploy -e .test.env
+        yarn start
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/generated/  # Don't want to overwrite what's generated via
+                                 # the non-test environment.
+    environment:
+      PRISMA_ENDPOINT: http://prisma:4466/soundproud/test
+    tty: true
+    stdin_open: true
+    ports:
+      - 4001:4000

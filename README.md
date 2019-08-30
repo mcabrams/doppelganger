@@ -183,9 +183,16 @@ are excluded from syncing to host via use of a named volume).
 
 
 ## Running Tests
+For tests, you'll want to use docker compose to build and run the test docker-compose
+setup.  This consists of:
+
 ```sh
-#TODO
+docker-compose -f docker-compose.yml -f docker-compose.test.yml build
+docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+docker-compose -f docker-compose.yml -f docker-compose.test.yml exec server-test /bin/sh
+npm run test
 ```
+
 ## Deployment
 ```sh
 #TODO

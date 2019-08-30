@@ -1,5 +1,5 @@
-import { Prisma } from './generated/prisma-client';
 import { Request } from 'express';
+import { Prisma } from './generated/prisma-client';
 
 export interface Context {
   prisma: Prisma;
