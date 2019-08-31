@@ -20,10 +20,21 @@ services:
         yarn start
     environment:
       PRISMA_ENDPOINT: http://prisma:4466/soundproud/test
-    # Should be same as server below this point
+    # Should be same as server in docker-compose.yml below this point
     build:
       context: ./server
     depends_on:
       - prisma
     tty: true
     stdin_open: true
+
+  cypress:
+    image: "cypress/included:3.3.0"
+    depends_on:
+      - client
+      - server
+    environment:
+      - CYPRESS_baseUrl=http://client:8080
+    working_dir: /e2e
+    volumes:
+      - ./e2e:/e2e

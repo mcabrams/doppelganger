@@ -193,6 +193,12 @@ docker-compose -f docker-compose.yml -f docker-compose.test.yml exec server-test
 npm run test
 ```
 
+## Running e2e Tests
+
+```sh
+docker-compose -f docker-compose.yml -f docker-compose.test.yml run cypress cypress run
+```
+
 ## Deployment
 ```sh
 #TODO
