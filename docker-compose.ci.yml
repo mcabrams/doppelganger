@@ -2,6 +2,19 @@ version: '3'
 
 services:
 
+  client-test:
+    # Should be same as client in docker-compose.yml below this point (just overwriting volumes for CI)
+    build:
+      # Context is this directory instead of ./client because Dockerfile
+      # needs to copy schema.graphql file which is located in ./server
+      context: .
+      dockerfile: ./client/Dockerfile.local
+    command: npm run start
+    tty: true
+    stdin_open: true
+    ports:
+      - 8080:8080
+
   server-test:
     # Pretty much identical to server-test in docker-compose.test.yml with
     # exception of no volumes
