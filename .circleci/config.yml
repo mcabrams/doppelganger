@@ -7,4 +7,9 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: docker-compose -f docker-compose.yml -f docker-compose.ci.yml run server-test /bin/sh -c "./wait-for.sh prisma:4466 ; npm run test"
+      - run:
+          name: server linting
+          command: docker-compose -f docker-compose.yml -f docker-compose.ci.yml run server-test /bin/sh -c "npm run lint"
+      - run:
+          name: server tests
+          command: docker-compose -f docker-compose.yml -f docker-compose.ci.yml run server-test /bin/sh -c "./wait-for.sh prisma:4466 ; npm run test"
