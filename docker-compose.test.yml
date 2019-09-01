@@ -3,6 +3,7 @@ version: '3'
 services:
 
   server-test:
+    image: soundproud-v3_server # use server image from docker-compose.yml
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
@@ -21,8 +22,6 @@ services:
     environment:
       PRISMA_ENDPOINT: http://prisma:4466/soundproud/test
     # Should be same as server in docker-compose.yml below this point
-    build:
-      context: ./server
     depends_on:
       - prisma
     tty: true
