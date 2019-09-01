@@ -49,5 +49,6 @@ module.exports = {
     stats: 'errors-only',
     host: '0.0.0.0',
     port: 8080,
+    disableHostCheck: true, // Don't use this dev server in production, this is necessary for e2e tests to work
   },
 };
