@@ -9,6 +9,6 @@ COPY ./server/src/schema/schema.graphql /app/schema/
 RUN npm run build
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
-FROM nginx:1.15
+FROM nginx:1.17
 COPY --from=build-stage /app/build/ /usr/share/nginx/html
 COPY ./client/nginx.conf /etc/nginx/conf.d/default.conf
