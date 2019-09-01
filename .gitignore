@@ -3,3 +3,4 @@ env-config.js
 
 # Testing artifacts
 **/cypress/videos
+**/cypress/screenshots
