@@ -15,7 +15,7 @@ const HeaderWithoutRouter: React.FC<RouteComponentProps> = props => {
   return (
     <div className="flex pa1 justify-between nowrap orange">
       <div className="flex flex-fixed black">
-        <div className="fw7 mr1">Hacker News</div>
+        <div data-testid="site-heading" className="fw7 mr1">Hacker News</div>
         <Link to="/" className="ml1 no-underline black">
           new
         </Link>

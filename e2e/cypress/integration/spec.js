@@ -1,5 +1,5 @@
 it('loads', () => {
   cy.visit('/');
-  cy.get('.fw7.mr1')
+  cy.get('[data-testid=site-heading]')
     .should('contain', 'Hacker News');
 });
