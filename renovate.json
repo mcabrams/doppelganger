@@ -3,5 +3,6 @@
     "config:base",
     ":pinAllExceptPeerDependencies"
   ],
-  "schedule": "before 7am"
+  "schedule": "before 7am",
+  "timezone": "America/Los_Angeles"
 }
