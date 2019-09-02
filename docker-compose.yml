@@ -47,6 +47,8 @@ services:
       POSTGRES_DB: postgresdb
       POSTGRES_USER: postgresadmin
       POSTGRES_PASSWORD: admin123
+    volumes:
+    - postgres:/var/lib/postgresql/data
 
   prisma:
     image: 'prismagraphql/prisma:1.34.8'
@@ -66,3 +68,6 @@ services:
             user: postgresadmin
             password: admin123
             migrations: true
+
+volumes:
+  postgres: ~
