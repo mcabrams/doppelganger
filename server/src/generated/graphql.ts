@@ -4,6 +4,7 @@ import { Link, User, Vote } from './prisma-client';
 import { Context } from '../types';
 export type Maybe<T> = T | undefined | null;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string,
@@ -15,20 +16,20 @@ export type Scalars = {
 };
 
 export type AuthPayload = {
-  __typename?: 'AuthPayload',
+   __typename?: 'AuthPayload',
   token?: Maybe<Scalars['String']>,
   user?: Maybe<User>,
 };
 
 
 export type Feed = {
-  __typename?: 'Feed',
+   __typename?: 'Feed',
   links: Array<Link>,
   count: Scalars['Int'],
 };
 
 export type Link = {
-  __typename?: 'Link',
+   __typename?: 'Link',
   id: Scalars['ID'],
   createdAt: Scalars['DateTime'],
   description: Scalars['String'],
@@ -47,7 +48,7 @@ export enum LinkOrderByInput {
 }
 
 export type Mutation = {
-  __typename?: 'Mutation',
+   __typename?: 'Mutation',
   post: Link,
   updateLink?: Maybe<Link>,
   deleteLink?: Maybe<Link>,
@@ -93,7 +94,7 @@ export type MutationVoteArgs = {
 };
 
 export type Query = {
-  __typename?: 'Query',
+   __typename?: 'Query',
   feed: Feed,
   link?: Maybe<Link>,
 };
@@ -112,13 +113,13 @@ export type QueryLinkArgs = {
 };
 
 export type Subscription = {
-  __typename?: 'Subscription',
+   __typename?: 'Subscription',
   newLink?: Maybe<Link>,
   newVote?: Maybe<Vote>,
 };
 
 export type User = {
-  __typename?: 'User',
+   __typename?: 'User',
   id: Scalars['ID'],
   name: Scalars['String'],
   email: Scalars['String'],
@@ -126,7 +127,7 @@ export type User = {
 };
 
 export type Vote = {
-  __typename?: 'Vote',
+   __typename?: 'Vote',
   id: Scalars['ID'],
   link: Link,
   user: User,
@@ -167,14 +168,23 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs>;
-  resolve?: SubscriptionResolveFn<TResult, TParent, TContext, TArgs>;
+export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
+  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
+  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
 }
 
-export type SubscriptionResolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
-  | ((...args: any[]) => SubscriptionResolverObject<TResult, TParent, TContext, TArgs>)
+export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
+  subscribe: SubscriptionSubscribeFn<any, TParent, TContext, TArgs>;
+  resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
+}
+
+export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
+  | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
+
+export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
+  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+  | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   parent: TParent,
@@ -252,22 +262,22 @@ export type LinkResolvers<ContextType = Context, ParentType extends ResolversPar
 }>;
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  post?: Resolver<ResolversTypes['Link'], ParentType, ContextType, MutationPostArgs>,
-  updateLink?: Resolver<Maybe<ResolversTypes['Link']>, ParentType, ContextType, MutationUpdateLinkArgs>,
-  deleteLink?: Resolver<Maybe<ResolversTypes['Link']>, ParentType, ContextType, MutationDeleteLinkArgs>,
-  signup?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, MutationSignupArgs>,
-  login?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, MutationLoginArgs>,
-  vote?: Resolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType, MutationVoteArgs>,
+  post?: Resolver<ResolversTypes['Link'], ParentType, ContextType, RequireFields<MutationPostArgs, 'url' | 'description'>>,
+  updateLink?: Resolver<Maybe<ResolversTypes['Link']>, ParentType, ContextType, RequireFields<MutationUpdateLinkArgs, 'id'>>,
+  deleteLink?: Resolver<Maybe<ResolversTypes['Link']>, ParentType, ContextType, RequireFields<MutationDeleteLinkArgs, 'id'>>,
+  signup?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'name'>>,
+  login?: Resolver<Maybe<ResolversTypes['AuthPayload']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>,
+  vote?: Resolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType, RequireFields<MutationVoteArgs, 'linkId'>>,
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   feed?: Resolver<ResolversTypes['Feed'], ParentType, ContextType, QueryFeedArgs>,
-  link?: Resolver<Maybe<ResolversTypes['Link']>, ParentType, ContextType, QueryLinkArgs>,
+  link?: Resolver<Maybe<ResolversTypes['Link']>, ParentType, ContextType, RequireFields<QueryLinkArgs, 'id'>>,
 }>;
 
 export type SubscriptionResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
-  newLink?: SubscriptionResolver<Maybe<ResolversTypes['Link']>, ParentType, ContextType>,
-  newVote?: SubscriptionResolver<Maybe<ResolversTypes['Vote']>, ParentType, ContextType>,
+  newLink?: SubscriptionResolver<Maybe<ResolversTypes['Link']>, "newLink", ParentType, ContextType>,
+  newVote?: SubscriptionResolver<Maybe<ResolversTypes['Vote']>, "newVote", ParentType, ContextType>,
 }>;
 
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
