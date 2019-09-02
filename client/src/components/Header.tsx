@@ -38,6 +38,7 @@ const HeaderWithoutRouter: React.FC<RouteComponentProps> = props => {
         <div className="flex flex-fixed">
           {authToken ? (
             <button
+              data-testid="nav-logout-link"
               className="ml1 pointer black"
               onClick={() => logout()}
               type="button"
@@ -45,7 +46,11 @@ const HeaderWithoutRouter: React.FC<RouteComponentProps> = props => {
               logout
             </button>
           ) : (
-            <Link to="/login" className="ml1 no-underline black">
+            <Link
+              to="/login"
+              data-testid="nav-login-link"
+              className="ml1 no-underline black"
+            >
               login
             </Link>
           )}
