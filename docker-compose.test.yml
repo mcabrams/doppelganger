@@ -4,8 +4,8 @@ services:
   client-test:
     image: soundproud-v3_client # use client image from docker-compose.yml
     environment:
-      - API_SERVER_URL=http://localhost:4001/graphql # use server-test port
-      - API_WS_SERVER_URL=ws://localhost:4001/graphql # use server-test port
+      - API_SERVER_URL=http://server-test:4000/graphql # use server-test port
+      - API_WS_SERVER_URL=ws://server-test:4000/graphql # use server-test port
     volumes:
       - ./client:/app
       - /app/node_modules

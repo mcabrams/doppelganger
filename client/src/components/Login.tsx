@@ -98,7 +98,7 @@ export const Login: React.FC<RouteComponentProps<LoginProps>> = props => {
       <div className="flex mt3">
         {isLoggedIn ? (
           <button
-            data-testid="login-link"
+            data-testid="login-button"
             type="submit"
             className="pointer mr2 button"
             onClick={() => login()}

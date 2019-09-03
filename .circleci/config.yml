@@ -28,7 +28,7 @@ jobs:
 
       - run:
           name: e2e tests
-          command: docker-compose -f docker-compose.yml -f docker-compose.test.yml up --exit-code-from cypress
+          command: ./e2e/test.sh
 
       - store_artifacts:
           path: e2e/cypress/videos
