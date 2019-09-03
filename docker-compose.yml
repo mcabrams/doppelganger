@@ -14,6 +14,7 @@ services:
       - /app/node_modules
       - ./server/src/schema:/app/schema  # Need to keep schema up to date based off of server
       - /app/build
+      - /app/public
     tty: true
     stdin_open: true
     ports:

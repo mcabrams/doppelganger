@@ -6,14 +6,17 @@ services:
     environment:
       - API_SERVER_URL=http://localhost:4001/graphql # use server-test port
       - API_WS_SERVER_URL=ws://localhost:4001/graphql # use server-test port
-
-    # Should be same as server in docker-compose.yml below this point
-    command: npm run start
     volumes:
       - ./client:/app
       - /app/node_modules
       - ./server/src/schema:/app/schema  # Need to keep schema up to date based off of server
       - /app/build
+      - /app/public
+      - /app/src/generated/  # Don't want to overwrite what's generated via
+                             # the non-test environment.
+
+    # Should be same as server in docker-compose.yml below this point
+    command: npm run start
     tty: true
     stdin_open: true
     ports:
@@ -24,8 +27,8 @@ services:
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
-      - /usr/src/app/generated/  # Don't want to overwrite what's generated via
-                                 # the non-test environment.
+      - /usr/src/app/src/generated/  # Don't want to overwrite what's generated via
+                                     # the non-test environment.
     ports:
       - 4001:4000
       - 4003:4003
