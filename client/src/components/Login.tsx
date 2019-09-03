@@ -37,7 +37,7 @@ export const Login: React.FC<RouteComponentProps<LoginProps>> = props => {
     props.history.push('/');
   };
 
-  const [login, _] = useLoginMutation({
+  const [login, { error: loginError }] = useLoginMutation({
     variables: { email, password },
     onCompleted: data => confirmLogin(data),
   });
@@ -60,7 +60,7 @@ export const Login: React.FC<RouteComponentProps<LoginProps>> = props => {
     props.history.push('/');
   };
 
-  const [signup, __] = useSignupMutation({
+  const [signup, { error: signupError }] = useSignupMutation({
     variables: { email, password, name },
     onCompleted: data => confirmSignup(data),
   });
@@ -125,6 +125,8 @@ export const Login: React.FC<RouteComponentProps<LoginProps>> = props => {
             ? 'need to create an account?'
             : 'already have an account?'}
         </button>
+        {loginError && <p>{loginError.message}</p>}
+        {signupError && <p>{signupError.message}</p>}
       </div>
     </div>
   );
