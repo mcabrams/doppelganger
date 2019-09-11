@@ -34,8 +34,7 @@ ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS')
 # Application definition
 
 INSTALLED_APPS = [
-    # User defined apps
-    'feed.apps.FeedConfig',
+    # User defined apps go here
     # Django defaults
     'django.contrib.admin',
     'django.contrib.auth',
