@@ -1,6 +1,7 @@
-FROM node:10-alpine
-WORKDIR /usr/src/app
-COPY ./package.json ./yarn.lock ./
-RUN yarn install
-COPY . ./
-CMD ["yarn", "start"]
+FROM python:3.7.4
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /app
+WORKDIR /app
+COPY requirements.txt /app/
+RUN pip install -r requirements.txt
+COPY . /app/

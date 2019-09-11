@@ -5,5 +5,5 @@ WORKDIR /app
 COPY ./client/package*.json /app/
 RUN npm install
 COPY ./client/ /app/
-COPY ./server/src/schema/schema.graphql /app/schema/
+COPY ./server/schema/schema.json /app/schema/
 RUN npm run build

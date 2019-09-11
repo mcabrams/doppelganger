@@ -4,12 +4,12 @@ services:
   client-test:
     image: soundproud-v3_client # use client image from docker-compose.yml
     environment:
-      - API_SERVER_URL=http://server-test:4000/graphql # use server-test port
-      - API_WS_SERVER_URL=ws://server-test:4000/graphql # use server-test port
+      - API_SERVER_URL=http://server-test:8000/graphql # use server-test port
+      - API_WS_SERVER_URL=ws://server-test:8000/graphql # use server-test port
     volumes:
       - ./client:/app
       - /app/node_modules
-      - ./server/src/schema:/app/schema  # Need to keep schema up to date based off of server
+      - ./server/schema:/app/schema # Need to keep schema up to date based off of server
       - /app/build
       - /app/public
       - /app/src/generated/  # Don't want to overwrite what's generated via
@@ -22,36 +22,11 @@ services:
     ports:
       - 8081:8080
 
-  server-test:
-    image: soundproud-v3_server # use server image from docker-compose.yml
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/src/generated/  # Don't want to overwrite what's generated via
-                                     # the non-test environment.
-    ports:
-      - 4001:4000
-      - 4003:4003
-    command:
-      - /bin/sh
-      - -c
-      - |
-        ./wait-for.sh prisma:4466
-        ./node_modules/.bin/prisma deploy -e .test.env
-        yarn start
-    environment:
-      PRISMA_ENDPOINT: http://prisma:4466/soundproud/test
-    # Should be same as server in docker-compose.yml below this point
-    depends_on:
-      - prisma
-    tty: true
-    stdin_open: true
-
   cypress:
     image: "cypress/included:3.4.1"
     depends_on:
       - client-test
-      - server-test
+      - server
     environment:
       - CYPRESS_baseUrl=http://client-test:8080
     working_dir: /e2e

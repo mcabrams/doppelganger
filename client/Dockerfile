@@ -5,7 +5,7 @@ WORKDIR /app
 COPY ./client/package*.json /app/
 RUN npm install
 COPY ./client/ /app/
-COPY ./server/src/schema/schema.graphql /app/schema/
+COPY ./server/schema/schema.json /app/schema/
 RUN npm run build
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx

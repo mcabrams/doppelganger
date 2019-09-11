@@ -12,7 +12,7 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
-      - ./server/src/schema:/app/schema  # Need to keep schema up to date based off of server
+      - ./server/schema:/app/schema # Need to keep schema up to date based off of server
       - /app/build
       - /app/public
     tty: true
@@ -24,21 +24,23 @@ services:
     build:
       context: ./server
     command:
-      - /bin/sh
+      - /bin/bash
       - -c
       - |
-        ./wait-for.sh prisma:4466
-        ./node_modules/.bin/prisma deploy
-        yarn start
+        python manage.py migrate
+        python manage.py graphql_schema
+        python manage.py runserver 0.0.0.0:8000
     depends_on:
-      - prisma
+      - database
     volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./server:/app
+    environment:
+      DATABASE_URL: postgresql://postgresadmin:admin123@database:5432/postgresdb
+      DJANGO_ALLOWED_HOSTS: localhost,server
     tty: true
     stdin_open: true
     ports:
-      - 4000:4000
+      - 8000:8000
 
   database:
     image: 'postgres:10.10'

@@ -2,4 +2,4 @@
 # depends on this directory, not client/
 node_modules
 generated
-schema.graphql
+schema.json

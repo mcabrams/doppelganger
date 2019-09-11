@@ -1,4 +1,4 @@
-schema: ./schema/schema.graphql
+schema: ./schema/schema.json
 generates:
   ./src/generated/graphql.tsx:
     documents: ./src/queries/*.tsx

@@ -1,0 +1,4 @@
+django==2.2.5
+django-environ==0.4.5
+graphene-django==2.5.0
+psycopg2==2.8.3
