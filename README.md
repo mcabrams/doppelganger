@@ -1,4 +1,4 @@
-# Soundproud
+# Doppelganger
 > TODO
 
 ## Development Setup
