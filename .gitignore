@@ -4,3 +4,6 @@ env-config.js
 # Testing artifacts
 **/cypress/videos
 **/cypress/screenshots
+
+# Python stuff
+__pycache__
