@@ -1,439 +1,225 @@
 /* THIS IS A GENERATED FILE - DO NOT MODIFY */
-import gql from "graphql-tag";
-import * as ApolloReactCommon from "@apollo/react-common";
-import * as ApolloReactHooks from "@apollo/react-hooks";
+import gql from 'graphql-tag';
+import * as ApolloReactCommon from '@apollo/react-common';
+import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  DateTime: any;
+  ID: string,
+  String: string,
+  Boolean: boolean,
+  Int: number,
+  Float: number,
+  /** 
+ * The `DateTime` scalar type represents a DateTime
+   * value as specified by
+   * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+ **/
+  DateTime: any,
+  /** 
+ * The `GenericScalar` scalar type represents a generic
+   * GraphQL scalar value that could be:
+   * String, Boolean, Int, Float, List or Object.
+ **/
+  GenericScalar: any,
 };
 
-export type AuthPayload = {
-  __typename?: "AuthPayload";
-  token?: Maybe<Scalars["String"]>;
-  user?: Maybe<User>;
+export type CreateUser = {
+   __typename?: 'CreateUser',
+  user?: Maybe<UserType>,
 };
 
-export type Feed = {
-  __typename?: "Feed";
-  links: Array<Link>;
-  count: Scalars["Int"];
-};
 
-export type Link = {
-  __typename?: "Link";
-  id: Scalars["ID"];
-  createdAt: Scalars["DateTime"];
-  description: Scalars["String"];
-  url: Scalars["String"];
-  postedBy?: Maybe<User>;
-  votes: Array<Vote>;
-};
-
-export enum LinkOrderByInput {
-  DescriptionAsc = "description_ASC",
-  DescriptionDesc = "description_DESC",
-  UrlAsc = "url_ASC",
-  UrlDesc = "url_DESC",
-  CreatedAtAsc = "createdAt_ASC",
-  CreatedAtDesc = "createdAt_DESC"
-}
 
 export type Mutation = {
-  __typename?: "Mutation";
-  post: Link;
-  updateLink?: Maybe<Link>;
-  deleteLink?: Maybe<Link>;
-  signup?: Maybe<AuthPayload>;
-  login?: Maybe<AuthPayload>;
-  vote?: Maybe<Vote>;
+   __typename?: 'Mutation',
+  createUser?: Maybe<CreateUser>,
+  /** Obtain JSON Web Token mutation */
+  tokenAuth?: Maybe<ObtainJsonWebToken>,
+  verifyToken?: Maybe<Verify>,
+  refreshToken?: Maybe<Refresh>,
 };
 
-export type MutationPostArgs = {
-  url: Scalars["String"];
-  description: Scalars["String"];
+
+export type MutationCreateUserArgs = {
+  email: Scalars['String'],
+  password: Scalars['String'],
+  username: Scalars['String']
 };
 
-export type MutationUpdateLinkArgs = {
-  id: Scalars["ID"];
-  url?: Maybe<Scalars["String"]>;
-  description?: Maybe<Scalars["String"]>;
+
+export type MutationTokenAuthArgs = {
+  email: Scalars['String'],
+  password: Scalars['String']
 };
 
-export type MutationDeleteLinkArgs = {
-  id: Scalars["ID"];
+
+export type MutationVerifyTokenArgs = {
+  token: Scalars['String']
 };
 
-export type MutationSignupArgs = {
-  email: Scalars["String"];
-  password: Scalars["String"];
-  name: Scalars["String"];
+
+export type MutationRefreshTokenArgs = {
+  token: Scalars['String']
 };
 
-export type MutationLoginArgs = {
-  email: Scalars["String"];
-  password: Scalars["String"];
-};
-
-export type MutationVoteArgs = {
-  linkId: Scalars["ID"];
+/** Obtain JSON Web Token mutation */
+export type ObtainJsonWebToken = {
+   __typename?: 'ObtainJSONWebToken',
+  token?: Maybe<Scalars['String']>,
 };
 
 export type Query = {
-  __typename?: "Query";
-  feed: Feed;
-  link?: Maybe<Link>;
+   __typename?: 'Query',
+  getUserList?: Maybe<Array<UserType>>,
 };
 
-export type QueryFeedArgs = {
-  filter?: Maybe<Scalars["String"]>;
-  skip?: Maybe<Scalars["Int"]>;
-  first?: Maybe<Scalars["Int"]>;
-  orderBy?: Maybe<LinkOrderByInput>;
+export type Refresh = {
+   __typename?: 'Refresh',
+  token?: Maybe<Scalars['String']>,
+  payload?: Maybe<Scalars['GenericScalar']>,
 };
 
-export type QueryLinkArgs = {
-  id: Scalars["ID"];
+export type UserType = {
+   __typename?: 'UserType',
+  id: Scalars['ID'],
+  password: Scalars['String'],
+  lastLogin?: Maybe<Scalars['DateTime']>,
+  /** Designates that this user has all permissions without explicitly assigning them. */
+  isSuperuser: Scalars['Boolean'],
+  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
+  username: Scalars['String'],
+  firstName: Scalars['String'],
+  lastName: Scalars['String'],
+  /** Designates whether the user can log into this admin site. */
+  isStaff: Scalars['Boolean'],
+  /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
+  isActive: Scalars['Boolean'],
+  dateJoined: Scalars['DateTime'],
+  email: Scalars['String'],
 };
 
-export type Subscription = {
-  __typename?: "Subscription";
-  newLink?: Maybe<Link>;
-  newVote?: Maybe<Vote>;
+export type Verify = {
+   __typename?: 'Verify',
+  payload?: Maybe<Scalars['GenericScalar']>,
+};
+export type CreateUserMutationVariables = {
+  email: Scalars['String'],
+  password: Scalars['String'],
+  username: Scalars['String']
 };
 
-export type User = {
-  __typename?: "User";
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  email: Scalars["String"];
-  links: Array<Link>;
+
+export type CreateUserMutation = (
+  { __typename?: 'Mutation' }
+  & { createUser: Maybe<{ __typename?: 'CreateUser' }
+    & CreateUserResponseFragment
+  > }
+);
+
+export type CreateUserResponseFragment = (
+  { __typename?: 'CreateUser' }
+  & { user: Maybe<(
+    { __typename?: 'UserType' }
+    & Pick<UserType, 'email' | 'username'>
+  )> }
+);
+
+export type GetUserListQueryVariables = {};
+
+
+export type GetUserListQuery = (
+  { __typename?: 'Query' }
+  & { getUserList: Maybe<Array<{ __typename?: 'UserType' }
+    & GetUserListResponseFragment
+  >> }
+);
+
+export type GetUserListResponseFragment = (
+  { __typename?: 'UserType' }
+  & Pick<UserType, 'email' | 'username'>
+);
+
+export type TokenAuthMutationVariables = {
+  email: Scalars['String'],
+  password: Scalars['String']
 };
 
-export type Vote = {
-  __typename?: "Vote";
-  id: Scalars["ID"];
-  link: Link;
-  user: User;
-};
-export type FeedSearchQueryVariables = {
-  filter: Scalars["String"];
-};
 
-export type FeedSearchQuery = { __typename?: "Query" } & {
-  feed: { __typename?: "Feed" } & {
-    links: Array<{ __typename?: "Link" } & LinkInfoFragment>;
-  };
-};
+export type TokenAuthMutation = (
+  { __typename?: 'Mutation' }
+  & { tokenAuth: Maybe<{ __typename?: 'ObtainJSONWebToken' }
+    & TokenAuthResponseFragment
+  > }
+);
 
-export type LinkInfoFragment = { __typename?: "Link" } & Pick<
-  Link,
-  "id" | "url" | "description" | "createdAt"
-> & {
-    postedBy: Maybe<{ __typename?: "User" } & Pick<User, "id" | "name">>;
-    votes: Array<
-      { __typename?: "Vote" } & Pick<Vote, "id"> & {
-          user: { __typename?: "User" } & Pick<User, "id">;
-        }
-    >;
-  };
+export type TokenAuthResponseFragment = (
+  { __typename?: 'ObtainJSONWebToken' }
+  & Pick<ObtainJsonWebToken, 'token'>
+);
+export const CreateUserResponseFragmentDoc = gql`
+    fragment CreateUserResponse on CreateUser {
+  user {
+    email
+    username
+  }
+}
+    `;
+export const GetUserListResponseFragmentDoc = gql`
+    fragment GetUserListResponse on UserType {
+  email
+  username
+}
+    `;
+export const TokenAuthResponseFragmentDoc = gql`
+    fragment TokenAuthResponse on ObtainJSONWebToken {
+  token
+}
+    `;
+export const CreateUserDocument = gql`
+    mutation CreateUser($email: String!, $password: String!, $username: String!) {
+  createUser(email: $email, password: $password, username: $username) {
+    ...CreateUserResponse
+  }
+}
+    ${CreateUserResponseFragmentDoc}`;
+export type CreateUserMutationFn = ApolloReactCommon.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
 
-export type LinkListQueryVariables = {
-  first?: Maybe<Scalars["Int"]>;
-  skip?: Maybe<Scalars["Int"]>;
-  orderBy?: Maybe<LinkOrderByInput>;
-};
-
-export type LinkListQuery = { __typename?: "Query" } & {
-  feed: { __typename?: "Feed" } & Pick<Feed, "count"> & {
-      links: Array<{ __typename?: "Link" } & LinkInfoFragment>;
-    };
-};
-
-export type LoginMutationVariables = {
-  email: Scalars["String"];
-  password: Scalars["String"];
-};
-
-export type LoginMutation = { __typename?: "Mutation" } & {
-  login: Maybe<{ __typename?: "AuthPayload" } & LoginResponseFragment>;
-};
-
-export type LoginResponseFragment = { __typename?: "AuthPayload" } & Pick<
-  AuthPayload,
-  "token"
->;
-
-export type PostMutationVariables = {
-  description: Scalars["String"];
-  url: Scalars["String"];
-};
-
-export type PostMutation = { __typename?: "Mutation" } & {
-  post: { __typename?: "Link" } & LinkInfoFragment;
-};
-
-export type SignupMutationVariables = {
-  email: Scalars["String"];
-  password: Scalars["String"];
-  name: Scalars["String"];
-};
-
-export type SignupMutation = { __typename?: "Mutation" } & {
-  signup: Maybe<{ __typename?: "AuthPayload" } & SignupResponseFragment>;
-};
-
-export type SignupResponseFragment = { __typename?: "AuthPayload" } & Pick<
-  AuthPayload,
-  "token"
->;
-
-export type VoteMutationVariables = {
-  linkId: Scalars["ID"];
-};
-
-export type VoteMutation = { __typename?: "Mutation" } & {
-  vote: Maybe<{ __typename?: "Vote" } & VoteResponseFragment>;
-};
-
-export type VoteResponseFragment = { __typename?: "Vote" } & Pick<
-  Vote,
-  "id"
-> & {
-    link: { __typename?: "Link" } & {
-      votes: Array<
-        { __typename?: "Vote" } & Pick<Vote, "id"> & {
-            user: { __typename?: "User" } & Pick<User, "id">;
-          }
-      >;
-    };
-    user: { __typename?: "User" } & Pick<User, "id">;
-  };
-export const LinkInfoFragmentDoc = gql`
-  fragment LinkInfo on Link {
-    id
-    url
-    description
-    createdAt
-    postedBy {
-      id
-      name
+    export function useCreateUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+      return ApolloReactHooks.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, baseOptions);
     }
-    votes {
-      id
-      user {
-        id
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = ApolloReactCommon.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const GetUserListDocument = gql`
+    query GetUserList {
+  getUserList {
+    ...GetUserListResponse
+  }
+}
+    ${GetUserListResponseFragmentDoc}`;
+
+    export function useGetUserListQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetUserListQuery, GetUserListQueryVariables>) {
+      return ApolloReactHooks.useQuery<GetUserListQuery, GetUserListQueryVariables>(GetUserListDocument, baseOptions);
+    }
+      export function useGetUserListLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUserListQuery, GetUserListQueryVariables>) {
+        return ApolloReactHooks.useLazyQuery<GetUserListQuery, GetUserListQueryVariables>(GetUserListDocument, baseOptions);
       }
-    }
+      
+export type GetUserListQueryHookResult = ReturnType<typeof useGetUserListQuery>;
+export type GetUserListQueryResult = ApolloReactCommon.QueryResult<GetUserListQuery, GetUserListQueryVariables>;
+export const TokenAuthDocument = gql`
+    mutation TokenAuth($email: String!, $password: String!) {
+  tokenAuth(email: $email, password: $password) {
+    ...TokenAuthResponse
   }
-`;
-export const LoginResponseFragmentDoc = gql`
-  fragment LoginResponse on AuthPayload {
-    token
-  }
-`;
-export const SignupResponseFragmentDoc = gql`
-  fragment SignupResponse on AuthPayload {
-    token
-  }
-`;
-export const VoteResponseFragmentDoc = gql`
-  fragment VoteResponse on Vote {
-    id
-    link {
-      votes {
-        id
-        user {
-          id
-        }
-      }
-    }
-    user {
-      id
-    }
-  }
-`;
-export const FeedSearchDocument = gql`
-  query FeedSearch($filter: String!) {
-    feed(filter: $filter) {
-      links {
-        ...LinkInfo
-      }
-    }
-  }
-  ${LinkInfoFragmentDoc}
-`;
-
-export function useFeedSearchQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    FeedSearchQuery,
-    FeedSearchQueryVariables
-  >
-) {
-  return ApolloReactHooks.useQuery<FeedSearchQuery, FeedSearchQueryVariables>(
-    FeedSearchDocument,
-    baseOptions
-  );
 }
-export type FeedSearchQueryHookResult = ReturnType<typeof useFeedSearchQuery>;
-export type FeedSearchQueryResult = ApolloReactCommon.QueryResult<
-  FeedSearchQuery,
-  FeedSearchQueryVariables
->;
-export const LinkListDocument = gql`
-  query LinkList($first: Int, $skip: Int, $orderBy: LinkOrderByInput) {
-    feed(first: $first, skip: $skip, orderBy: $orderBy) {
-      links {
-        ...LinkInfo
-      }
-      count
-    }
-  }
-  ${LinkInfoFragmentDoc}
-`;
+    ${TokenAuthResponseFragmentDoc}`;
+export type TokenAuthMutationFn = ApolloReactCommon.MutationFunction<TokenAuthMutation, TokenAuthMutationVariables>;
 
-export function useLinkListQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    LinkListQuery,
-    LinkListQueryVariables
-  >
-) {
-  return ApolloReactHooks.useQuery<LinkListQuery, LinkListQueryVariables>(
-    LinkListDocument,
-    baseOptions
-  );
-}
-export type LinkListQueryHookResult = ReturnType<typeof useLinkListQuery>;
-export type LinkListQueryResult = ApolloReactCommon.QueryResult<
-  LinkListQuery,
-  LinkListQueryVariables
->;
-export const LoginDocument = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      ...LoginResponse
+    export function useTokenAuthMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TokenAuthMutation, TokenAuthMutationVariables>) {
+      return ApolloReactHooks.useMutation<TokenAuthMutation, TokenAuthMutationVariables>(TokenAuthDocument, baseOptions);
     }
-  }
-  ${LoginResponseFragmentDoc}
-`;
-export type LoginMutationFn = ApolloReactCommon.MutationFunction<
-  LoginMutation,
-  LoginMutationVariables
->;
-
-export function useLoginMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    LoginMutation,
-    LoginMutationVariables
-  >
-) {
-  return ApolloReactHooks.useMutation<LoginMutation, LoginMutationVariables>(
-    LoginDocument,
-    baseOptions
-  );
-}
-export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
-export type LoginMutationResult = ApolloReactCommon.MutationResult<
-  LoginMutation
->;
-export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  LoginMutation,
-  LoginMutationVariables
->;
-export const PostDocument = gql`
-  mutation Post($description: String!, $url: String!) {
-    post(description: $description, url: $url) {
-      ...LinkInfo
-    }
-  }
-  ${LinkInfoFragmentDoc}
-`;
-export type PostMutationFn = ApolloReactCommon.MutationFunction<
-  PostMutation,
-  PostMutationVariables
->;
-
-export function usePostMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    PostMutation,
-    PostMutationVariables
-  >
-) {
-  return ApolloReactHooks.useMutation<PostMutation, PostMutationVariables>(
-    PostDocument,
-    baseOptions
-  );
-}
-export type PostMutationHookResult = ReturnType<typeof usePostMutation>;
-export type PostMutationResult = ApolloReactCommon.MutationResult<PostMutation>;
-export type PostMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  PostMutation,
-  PostMutationVariables
->;
-export const SignupDocument = gql`
-  mutation Signup($email: String!, $password: String!, $name: String!) {
-    signup(email: $email, password: $password, name: $name) {
-      ...SignupResponse
-    }
-  }
-  ${SignupResponseFragmentDoc}
-`;
-export type SignupMutationFn = ApolloReactCommon.MutationFunction<
-  SignupMutation,
-  SignupMutationVariables
->;
-
-export function useSignupMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    SignupMutation,
-    SignupMutationVariables
-  >
-) {
-  return ApolloReactHooks.useMutation<SignupMutation, SignupMutationVariables>(
-    SignupDocument,
-    baseOptions
-  );
-}
-export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
-export type SignupMutationResult = ApolloReactCommon.MutationResult<
-  SignupMutation
->;
-export type SignupMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  SignupMutation,
-  SignupMutationVariables
->;
-export const VoteDocument = gql`
-  mutation Vote($linkId: ID!) {
-    vote(linkId: $linkId) {
-      ...VoteResponse
-    }
-  }
-  ${VoteResponseFragmentDoc}
-`;
-export type VoteMutationFn = ApolloReactCommon.MutationFunction<
-  VoteMutation,
-  VoteMutationVariables
->;
-
-export function useVoteMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
-    VoteMutation,
-    VoteMutationVariables
-  >
-) {
-  return ApolloReactHooks.useMutation<VoteMutation, VoteMutationVariables>(
-    VoteDocument,
-    baseOptions
-  );
-}
-export type VoteMutationHookResult = ReturnType<typeof useVoteMutation>;
-export type VoteMutationResult = ApolloReactCommon.MutationResult<VoteMutation>;
-export type VoteMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  VoteMutation,
-  VoteMutationVariables
->;
+export type TokenAuthMutationHookResult = ReturnType<typeof useTokenAuthMutation>;
+export type TokenAuthMutationResult = ApolloReactCommon.MutationResult<TokenAuthMutation>;
+export type TokenAuthMutationOptions = ApolloReactCommon.BaseMutationOptions<TokenAuthMutation, TokenAuthMutationVariables>;

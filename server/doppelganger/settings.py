@@ -35,6 +35,7 @@ ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS')
 
 INSTALLED_APPS = [
     # User defined apps go here
+    'user.apps.UserConfig',
     # Django defaults
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,12 +44,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 3rd party apps
+    'corsheaders',
     'graphene_django',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # 3rd party cors middleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -128,4 +132,18 @@ STATIC_URL = '/static/'
 GRAPHENE = {
     'SCHEMA': 'doppelganger.schema.schema',
     'SCHEMA_OUTPUT': 'schema/schema.json',
+    'MIDDLEWARE': [
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    ],
 }
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+AUTH_USER_MODEL = 'user.User'
+CORS_ORIGIN_WHITELIST = ['http://localhost:8080', 'http://localhost:8000']
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = ['localhost:8080', 'localhost:8000',
+                        'http://localhost:8080', 'http://localhost:8000']
