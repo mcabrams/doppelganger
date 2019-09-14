@@ -26,7 +26,7 @@ To perform actions inside container:
 docker-compose run server /bin/sh
 ```
 
-Open http://localhost:4666/graphql
+Open http://localhost:8000/graphql
 
 
 ### Client
@@ -40,6 +40,8 @@ To perform actions inside container:
 ```
 docker-compose run client /bin/sh
 ```
+
+Open http://localhost:8080
 
 \# TODO
 
