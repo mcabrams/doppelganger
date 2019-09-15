@@ -65,5 +65,10 @@ describe('homepage', () => {
       .should('be.visible');
     // our auth cookie should be present
     // cy.getCookie('your-session-cookie').should('exist')
+
+    /* Reloading should not clear logged in state */
+    cy.reload();
+    cy.get('[data-testid=logout-button]')
+      .should('be.visible');
   });
 });

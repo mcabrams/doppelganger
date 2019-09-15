@@ -1,6 +1,10 @@
 import React, {
-  Dispatch, SetStateAction, useState, useContext, createContext,
+  Dispatch, SetStateAction, useContext, createContext,
 } from 'react';
+import createPersistedState from 'use-persisted-state';
+
+// Use persisted state for tracking login so it applies across tabs and reloads
+const useLoggedInState = createPersistedState('loggedIn');
 
 type IsLoggedInContext = [
   boolean,
@@ -10,7 +14,7 @@ const isLoggedInContext = createContext<IsLoggedInContext>([false, null]);
 
 // Provider hook that creates isLoggedIn object and handles state
 const useProvideIsLoggedIn = () => {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useLoggedInState(false);
 
   return [isLoggedIn, setLoggedIn];
 };
