@@ -31,9 +31,15 @@ export type CreateUser = {
 
 
 
+export type Logout = {
+   __typename?: 'Logout',
+  noop?: Maybe<Scalars['Boolean']>,
+};
+
 export type Mutation = {
    __typename?: 'Mutation',
   createUser?: Maybe<CreateUser>,
+  logout?: Maybe<Logout>,
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>,
   verifyToken?: Maybe<Verify>,
@@ -140,6 +146,17 @@ export type GetUserListResponseFragment = (
   & Pick<UserType, 'email' | 'username'>
 );
 
+export type LogoutMutationVariables = {};
+
+
+export type LogoutMutation = (
+  { __typename?: 'Mutation' }
+  & { logout: Maybe<(
+    { __typename?: 'Logout' }
+    & Pick<Logout, 'noop'>
+  )> }
+);
+
 export type TokenAuthMutationVariables = {
   email: Scalars['String'],
   password: Scalars['String']
@@ -208,6 +225,21 @@ export const GetUserListDocument = gql`
       
 export type GetUserListQueryHookResult = ReturnType<typeof useGetUserListQuery>;
 export type GetUserListQueryResult = ApolloReactCommon.QueryResult<GetUserListQuery, GetUserListQueryVariables>;
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout {
+    noop
+  }
+}
+    `;
+export type LogoutMutationFn = ApolloReactCommon.MutationFunction<LogoutMutation, LogoutMutationVariables>;
+
+    export function useLogoutMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+      return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
+    }
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const TokenAuthDocument = gql`
     mutation TokenAuth($email: String!, $password: String!) {
   tokenAuth(email: $email, password: $password) {

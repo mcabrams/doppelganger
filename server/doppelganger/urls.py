@@ -19,7 +19,24 @@ from django.urls import path
 from graphene_django.views import GraphQLView
 from graphql_jwt.decorators import jwt_cookie
 
+
+class DoppelgangerGraphQLView(GraphQLView):
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        response = self._delete_cookies_on_response_if_needed(request, response)
+        return response
+
+    def _delete_cookies_on_response_if_needed(self, request, response):
+        data = self.parse_body(request)
+        operation_name = self.get_graphql_params(request, data)[2]
+
+        if operation_name and operation_name == 'Logout':
+            response.delete_cookie('JWT')
+
+        return response
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('graphql', jwt_cookie(GraphQLView.as_view(graphiql=True))),
+    path('graphql', jwt_cookie(DoppelgangerGraphQLView.as_view(graphiql=True))),
 ]

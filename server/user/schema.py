@@ -17,6 +17,17 @@ class Query(graphene.ObjectType):
         return models.User.objects.all()
 
 
+class Logout(graphene.Mutation):
+    """ The real action happens in our custom GraphQLView """
+    # Just because we have to have a field, we put this; the meat occurs in the
+    # GraphQLView where we remove the cookie
+    noop = graphene.Field(graphene.Boolean)
+
+    def mutate(self, info):
+        # TODO: Consider revoking token here?
+        pass
+
+
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
 
@@ -38,3 +49,4 @@ class CreateUser(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_user = CreateUser.Field()
+    logout = Logout.Field()
