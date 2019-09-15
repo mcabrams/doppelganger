@@ -3,9 +3,6 @@ describe('homepage', () => {
     /* Test Registration */
     cy.visit('/');
 
-    // TODO: Remove this; needed right now for csrftoken
-    cy.reload();
-
     cy.get('#root')
       .should('contain', 'Hello world');
 

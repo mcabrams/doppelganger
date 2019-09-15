@@ -12,8 +12,6 @@ docker-compose up -d
 
 Open localhost:8080 in your browser.
 
-## Installing new packages or using CLI to adjust what gets included in prisma image
-
 ### Server
 ```sh
 cd server/

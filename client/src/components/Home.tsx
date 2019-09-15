@@ -4,7 +4,7 @@ import { RouteComponentProps } from '@reach/router';
 type HomeProps = RouteComponentProps;
 
 export const Home: React.FC<HomeProps> = () => (
-  <div>
+  <div data-testid="home">
     Hello world!
   </div>
 );
