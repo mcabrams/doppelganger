@@ -12,7 +12,7 @@ import { IsLoggedInProvider } from '@src/hooks/useIsLoggedIn';
 import { env } from '@src/lib/env';
 
 const httpLink = createHttpLink({
-  uri: env('API_SERVER_URL'),
+  uri: env('API_GRAPHQL_SERVER_URL'),
   credentials: 'include',
 });
 

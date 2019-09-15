@@ -1,9 +1,72 @@
 describe('homepage', () => {
-  it('says hello world', () => {
+  it('supports signup, login and logout', () => {
     /* Test Registration */
     cy.visit('/');
 
-    cy.get('.root')
-      .should('contain', 'hello world');
+    // TODO: Remove this; needed right now for csrftoken
+    cy.reload();
+
+    cy.get('#root')
+      .should('contain', 'Hello world');
+
+    // cy.getCookie('csrftoken').should('exist');
+
+    const username = 'foo';
+    const password = 'foobar1234';
+    const email = 'foo@example.com';
+
+    cy.get('[data-testid=signup-nav-link]')
+      .click();
+
+    cy.url()
+      .should('eq', Cypress.config().baseUrl + '/signup');
+
+    cy.get('[data-testid=username-input]')
+      .type(username);
+    cy.get('[data-testid=password-input]')
+      .type(password);
+    cy.get('[data-testid=email-input]')
+      .type(email);
+    cy.get('[data-testid=signup-submit-button]')
+      .click();
+
+    cy.url()
+      .should('eq', Cypress.config().baseUrl + '/');
+    cy.get('[data-testid=logout-button]')
+      .should('be.visible');
+    // our auth cookie should be present
+    // cy.getCookie('your-session-cookie').should('exist')
+
+    /* Test Logout */
+
+    cy.get('[data-testid=logout-button]')
+      .click();
+    cy.get('[data-testid=login-nav-link]')
+      .should('be.visible');
+    cy.get('[data-testid=signup-nav-link]')
+      .should('be.visible');
+
+    // TODO: maybe test for clearing cookie here?
+
+    /* Test Login */
+
+    cy.get('[data-testid=login-nav-link]')
+      .click();
+    cy.url()
+      .should('eq', Cypress.config().baseUrl + '/login');
+
+    cy.get('[data-testid=email-input]')
+      .type(email);
+    cy.get('[data-testid=password-input]')
+      .type(password);
+    cy.get('[data-testid=login-submit-button]')
+      .click();
+
+    cy.url()
+      .should('eq', Cypress.config().baseUrl + '/');
+    cy.get('[data-testid=logout-button]')
+      .should('be.visible');
+    // our auth cookie should be present
+    // cy.getCookie('your-session-cookie').should('exist')
   });
 });

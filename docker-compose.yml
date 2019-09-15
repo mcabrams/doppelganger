@@ -38,7 +38,8 @@ services:
     environment:
       DATABASE_URL: postgresql://postgresadmin:admin123@database:5432/postgresdb
       DJANGO_ALLOWED_HOSTS: localhost,server
-      DJANGO_CORS_ORIGIN_WHITELIST: http://localhost:8080,http://localhost:8000,http://server:8080,http://server:8000
+      DJANGO_CORS_ORIGIN_WHITELIST: http://localhost:8080,http://client:8080
+      DJANGO_TRUSTED_ORIGINS: http://localhost:8080,http://client:8080
     tty: true
     stdin_open: true
     ports:

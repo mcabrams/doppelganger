@@ -4,8 +4,9 @@ services:
   client-test:
     image: doppelganger_client # use client image from docker-compose.yml
     environment:
-      - API_SERVER_URL=http://server-test:8000/graphql # use server-test port
-      - API_WS_SERVER_URL=ws://server-test:8000/graphql # use server-test port
+      - API_SERVER_URL=http://server-test:8001 # use server-test port
+      - API_GRAPHQL_SERVER_URL=http://server-test:8001/graphql # use server-test port
+      - API_WS_SERVER_URL=ws://server-test:8001/graphql # use server-test port
     volumes:
       - ./client:/app
       - /app/node_modules
@@ -14,6 +15,8 @@ services:
       - /app/public
       - /app/src/generated/  # Don't want to overwrite what's generated via
                              # the non-test environment.
+    depends_on:
+      - server-test
 
     # Should be same as server in docker-compose.yml below this point
     command: npm run start
@@ -22,11 +25,39 @@ services:
     ports:
       - 8081:8080
 
+  server-test:
+    build:
+      context: ./server
+    command:
+      - /bin/bash
+      - -c
+      - |
+        ./wait-for.sh database:5432
+        python manage.py migrate
+        python manage.py graphql_schema
+        python manage.py runserver 0.0.0.0:8001
+    depends_on:
+      - database
+    volumes:
+      - ./server:/app
+      - /app/schema/  # Don't want to overwrite what's generated via
+                      # the non-test environment.
+    environment:
+      DATABASE_URL: postgresql://postgresadmin:admin123@database:5432/postgresdb
+      DJANGO_ALLOWED_HOSTS: localhost,server-test
+      DJANGO_CORS_ORIGIN_WHITELIST: http://localhost:8081,http://client-test:8080
+      DJANGO_TRUSTED_ORIGINS: http://localhost:8081,http://client-test:8080
+      DJANGO_DISABLE_CSRF: 'True'
+    tty: true
+    stdin_open: true
+    ports:
+      - 8001:8001
+
   cypress:
     image: "cypress/included:3.4.1"
     depends_on:
       - client-test
-      - server
+      - server-test
     environment:
       - CYPRESS_baseUrl=http://client-test:8080
     working_dir: /e2e

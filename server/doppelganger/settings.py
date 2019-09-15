@@ -54,7 +54,7 @@ MIDDLEWARE = [
     # 3rd party cors middleware
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    *([] if env('DJANGO_DISABLE_CSRF', default=False) else ['django.middleware.csrf.CsrfViewMiddleware']),
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -143,7 +143,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = 'user.User'
-CORS_ORIGIN_WHITELIST = ['http://localhost:8080', 'http://localhost:8000']
+
+CORS_ORIGIN_WHITELIST = env.list('DJANGO_CORS_ORIGIN_WHITELIST')
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ['localhost:8080', 'localhost:8000',
-                        'http://localhost:8080', 'http://localhost:8000']
+CSRF_TRUSTED_ORIGINS = env.list('DJANGO_TRUSTED_ORIGINS')

@@ -15,8 +15,8 @@ export const Nav: React.FC<NavProps> = () => {
       <Link to={ROUTES.home}>Home</Link>
       {!isLoggedIn ? (
         <>
-          <Link to={ROUTES.login}>Login</Link>
-          <Link to={ROUTES.signup}>Signup</Link>
+          <Link to={ROUTES.login} data-testid="login-nav-link">Login</Link>
+          <Link to={ROUTES.signup} data-testid="signup-nav-link">Signup</Link>
         </>
       ) : (
         <Logout />

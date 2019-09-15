@@ -42,6 +42,7 @@ export const Login: React.FC<LoginProps> = ({ navigate }) => {
             id={EMAIL_FIELD_NAME}
             value={email}
             onChange={e => setEmail(e.target.value)}
+            data-testid="email-input"
           />
         </label>
         <label htmlFor={PASSWORD_FIELD_NAME}>
@@ -51,9 +52,10 @@ export const Login: React.FC<LoginProps> = ({ navigate }) => {
             id={PASSWORD_FIELD_NAME}
             value={password}
             onChange={e => setPassword(e.target.value)}
+            data-testid="password-input"
           />
         </label>
-        <button type="submit">Login</button>
+        <button type="submit" data-testid="login-submit-button">Login</button>
       </form>
     </div>
   );

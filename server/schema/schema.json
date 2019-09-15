@@ -377,7 +377,7 @@
             {
               "args": [],
               "deprecationReason": null,
-              "description": null,
+              "description": "The real action happens in our custom GraphQLView ",
               "isDeprecated": false,
               "name": "logout",
               "type": {
@@ -512,7 +512,7 @@
           "possibleTypes": null
         },
         {
-          "description": null,
+          "description": "The real action happens in our custom GraphQLView ",
           "enumValues": null,
           "fields": [
             {

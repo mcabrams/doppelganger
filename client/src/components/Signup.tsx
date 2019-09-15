@@ -62,6 +62,7 @@ export const Signup: React.FC<SignupProps> = ({ navigate }) => {
             id={USERNAME_FIELD_NAME}
             value={username}
             onChange={e => setUsername(e.target.value)}
+            data-testid="username-input"
           />
         </label>
         <label htmlFor={EMAIL_FIELD_NAME}>
@@ -71,6 +72,7 @@ export const Signup: React.FC<SignupProps> = ({ navigate }) => {
             id={EMAIL_FIELD_NAME}
             value={email}
             onChange={e => setEmail(e.target.value)}
+            data-testid="email-input"
           />
         </label>
         <label htmlFor={PASSWORD_FIELD_NAME}>
@@ -80,9 +82,10 @@ export const Signup: React.FC<SignupProps> = ({ navigate }) => {
             id={PASSWORD_FIELD_NAME}
             value={password}
             onChange={e => setPassword(e.target.value)}
+            data-testid="password-input"
           />
         </label>
-        <button type="submit">Signup</button>
+        <button type="submit" data-testid="signup-submit-button">Signup</button>
         {error}
       </form>
     </div>

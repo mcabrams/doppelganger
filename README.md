@@ -43,8 +43,6 @@ docker-compose run client /bin/sh
 
 Open http://localhost:8080
 
-\# TODO
-
 ## Development Host Side
 
 If you want things like linting and typechecking to work on the host side,

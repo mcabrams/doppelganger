@@ -12,6 +12,12 @@ export const Logout: React.FC<LogoutProps> = () => {
   });
 
   return (
-    <button type="button" onClick={() => logout()}>Logout</button>
+    <button
+      type="button"
+      onClick={() => logout()}
+      data-testid="logout-button"
+    >
+      Logout
+    </button>
   );
 };

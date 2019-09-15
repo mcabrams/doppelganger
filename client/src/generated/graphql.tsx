@@ -31,6 +31,7 @@ export type CreateUser = {
 
 
 
+/** The real action happens in our custom GraphQLView  */
 export type Logout = {
    __typename?: 'Logout',
   noop?: Maybe<Scalars['Boolean']>,
@@ -39,6 +40,7 @@ export type Logout = {
 export type Mutation = {
    __typename?: 'Mutation',
   createUser?: Maybe<CreateUser>,
+  /** The real action happens in our custom GraphQLView  */
   logout?: Maybe<Logout>,
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>,
