@@ -6,7 +6,6 @@ services:
     environment:
       - API_SERVER_URL=http://server-test:8001 # use server-test port
       - API_GRAPHQL_SERVER_URL=http://server-test:8001/graphql # use server-test port
-      - API_WS_SERVER_URL=ws://server-test:8001/graphql # use server-test port
     volumes:
       - ./client:/app
       - /app/node_modules
