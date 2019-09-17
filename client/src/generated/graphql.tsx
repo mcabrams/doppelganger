@@ -11,12 +11,6 @@ export type Scalars = {
   Int: number,
   Float: number,
   /** 
- * The `DateTime` scalar type represents a DateTime
-   * value as specified by
-   * [iso8601](https://en.wikipedia.org/wiki/ISO_8601).
- **/
-  DateTime: any,
-  /** 
  * The `GenericScalar` scalar type represents a generic
    * GraphQL scalar value that could be:
    * String, Boolean, Int, Float, List or Object.
@@ -28,7 +22,6 @@ export type CreateUser = {
    __typename?: 'CreateUser',
   user?: Maybe<UserType>,
 };
-
 
 
 /** The real action happens in our custom GraphQLView  */
@@ -79,7 +72,8 @@ export type ObtainJsonWebToken = {
 
 export type Query = {
    __typename?: 'Query',
-  getUserList?: Maybe<Array<UserType>>,
+  getUserList?: Maybe<Array<UserPublicType>>,
+  getProtectedUserList?: Maybe<Array<UserType>>,
 };
 
 export type Refresh = {
@@ -88,22 +82,17 @@ export type Refresh = {
   payload?: Maybe<Scalars['GenericScalar']>,
 };
 
-export type UserType = {
-   __typename?: 'UserType',
-  id: Scalars['ID'],
-  password: Scalars['String'],
-  lastLogin?: Maybe<Scalars['DateTime']>,
-  /** Designates that this user has all permissions without explicitly assigning them. */
-  isSuperuser: Scalars['Boolean'],
+export type UserPublicType = {
+   __typename?: 'UserPublicType',
   /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
   username: Scalars['String'],
-  firstName: Scalars['String'],
-  lastName: Scalars['String'],
-  /** Designates whether the user can log into this admin site. */
-  isStaff: Scalars['Boolean'],
-  /** Designates whether this user should be treated as active. Unselect this instead of deleting accounts. */
-  isActive: Scalars['Boolean'],
-  dateJoined: Scalars['DateTime'],
+};
+
+export type UserType = {
+   __typename?: 'UserType',
+  password: Scalars['String'],
+  /** Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. */
+  username: Scalars['String'],
   email: Scalars['String'],
 };
 
@@ -138,14 +127,14 @@ export type GetUserListQueryVariables = {};
 
 export type GetUserListQuery = (
   { __typename?: 'Query' }
-  & { getUserList: Maybe<Array<{ __typename?: 'UserType' }
+  & { getUserList: Maybe<Array<{ __typename?: 'UserPublicType' }
     & GetUserListResponseFragment
   >> }
 );
 
 export type GetUserListResponseFragment = (
-  { __typename?: 'UserType' }
-  & Pick<UserType, 'email' | 'username'>
+  { __typename?: 'UserPublicType' }
+  & Pick<UserPublicType, 'username'>
 );
 
 export type LogoutMutationVariables = {};
@@ -185,8 +174,7 @@ export const CreateUserResponseFragmentDoc = gql`
 }
     `;
 export const GetUserListResponseFragmentDoc = gql`
-    fragment GetUserListResponse on UserType {
-  email
+    fragment GetUserListResponse on UserPublicType {
   username
 }
     `;

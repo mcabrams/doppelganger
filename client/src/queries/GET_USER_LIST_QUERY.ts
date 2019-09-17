@@ -6,8 +6,7 @@ export const GET_USER_LIST_QUERY = gql`
       ...GetUserListResponse
     }
   }
-  fragment GetUserListResponse on UserType {
-    email
+  fragment GetUserListResponse on UserPublicType {
     username
   }
 `;

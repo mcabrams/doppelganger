@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 import graphene
 from graphene_django.types import DjangoObjectType
+from graphql_jwt.decorators import superuser_required
 
 from . import models
 
@@ -8,12 +9,24 @@ from . import models
 class UserType(DjangoObjectType):
     class Meta:
         model = models.User
+        fields = ('username', 'password', 'email')
+
+
+class UserPublicType(DjangoObjectType):
+    class Meta:
+        model = models.User
+        fields = ('username',)
 
 
 class Query(graphene.ObjectType):
-    get_user_list = graphene.List(graphene.NonNull(UserType))
+    get_user_list = graphene.List(graphene.NonNull(UserPublicType))
+    get_protected_user_list = graphene.List(graphene.NonNull(UserType))
 
     def resolve_get_user_list(self, info, **kwargs):
+        return models.User.objects.all()
+
+    @superuser_required
+    def resolve_get_protected_user_list(self, info, **kwargs):
         return models.User.objects.all()
 
 

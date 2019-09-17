@@ -79,6 +79,26 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
+                    "name": "UserPublicType",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            {
+              "args": [],
+              "deprecationReason": null,
+              "description": null,
+              "isDeprecated": false,
+              "name": "getProtectedUserList",
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
                     "name": "UserType",
                     "ofType": null
                   }
@@ -99,19 +119,40 @@
             {
               "args": [],
               "deprecationReason": null,
-              "description": "",
+              "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
               "isDeprecated": false,
-              "name": "id",
+              "name": "username",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
                   "kind": "SCALAR",
-                  "name": "ID",
+                  "name": "String",
                   "ofType": null
                 }
               }
-            },
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "kind": "OBJECT",
+          "name": "UserPublicType",
+          "possibleTypes": null
+        },
+        {
+          "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
+          "enumValues": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "kind": "SCALAR",
+          "name": "String",
+          "possibleTypes": null
+        },
+        {
+          "description": null,
+          "enumValues": null,
+          "fields": [
             {
               "args": [],
               "deprecationReason": null,
@@ -124,34 +165,6 @@
                 "ofType": {
                   "kind": "SCALAR",
                   "name": "String",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
-              "name": "lastLogin",
-              "type": {
-                "kind": "SCALAR",
-                "name": "DateTime",
-                "ofType": null
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "Designates that this user has all permissions without explicitly assigning them.",
-              "isDeprecated": false,
-              "name": "isSuperuser",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
                   "ofType": null
                 }
               }
@@ -177,86 +190,6 @@
               "deprecationReason": null,
               "description": "",
               "isDeprecated": false,
-              "name": "firstName",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
-              "name": "lastName",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "Designates whether the user can log into this admin site.",
-              "isDeprecated": false,
-              "name": "isStaff",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
-              "isDeprecated": false,
-              "name": "isActive",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
-              "name": "dateJoined",
-              "type": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "DateTime",
-                  "ofType": null
-                }
-              }
-            },
-            {
-              "args": [],
-              "deprecationReason": null,
-              "description": "",
-              "isDeprecated": false,
               "name": "email",
               "type": {
                 "kind": "NON_NULL",
@@ -273,46 +206,6 @@
           "interfaces": [],
           "kind": "OBJECT",
           "name": "UserType",
-          "possibleTypes": null
-        },
-        {
-          "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
-          "enumValues": null,
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "kind": "SCALAR",
-          "name": "ID",
-          "possibleTypes": null
-        },
-        {
-          "description": "The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.",
-          "enumValues": null,
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "kind": "SCALAR",
-          "name": "String",
-          "possibleTypes": null
-        },
-        {
-          "description": "The `DateTime` scalar type represents a DateTime\nvalue as specified by\n[iso8601](https://en.wikipedia.org/wiki/ISO_8601).",
-          "enumValues": null,
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "kind": "SCALAR",
-          "name": "DateTime",
-          "possibleTypes": null
-        },
-        {
-          "description": "The `Boolean` scalar type represents `true` or `false`.",
-          "enumValues": null,
-          "fields": null,
-          "inputFields": null,
-          "interfaces": null,
-          "kind": "SCALAR",
-          "name": "Boolean",
           "possibleTypes": null
         },
         {
@@ -532,6 +425,16 @@
           "interfaces": [],
           "kind": "OBJECT",
           "name": "Logout",
+          "possibleTypes": null
+        },
+        {
+          "description": "The `Boolean` scalar type represents `true` or `false`.",
+          "enumValues": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "kind": "SCALAR",
+          "name": "Boolean",
           "possibleTypes": null
         },
         {
