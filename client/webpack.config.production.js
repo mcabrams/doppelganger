@@ -1,15 +1,16 @@
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const tsImportPluginFactory = require('ts-import-plugin');
 
 const main = [
-  './src/index.tsx'
+  './src/index.tsx',
 ];
 
 module.exports = {
   context: process.cwd(), // to automatically find tsconfig.json
   entry: {
-    main: main
+    main,
   },
   output: {
     path: path.join(process.cwd(), 'build'),
@@ -19,7 +20,7 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin({
       async: false,
       useTypescriptIncrementalApi: true,
-      memoryLimit: 4096
+      memoryLimit: 4096,
     }),
     new HtmlWebpackPlugin({
       hash: true,
@@ -44,13 +45,22 @@ module.exports = {
       {
         test: /.tsx?$/,
         use: [
-          { loader: 'ts-loader', options: { transpileOnly: true } }
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+              getCustomTransformers: () => ({
+                before: [tsImportPluginFactory({ style: 'css' })],
+              }),
+            },
+          },
         ],
-      }
-    ]
+      },
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+    ],
   },
   resolve: {
-    alias: { '@src': path.resolve(__dirname, "src") },
-    extensions: [".tsx", ".ts", ".js"]
-  }
+    alias: { '@src': path.resolve(__dirname, 'src') },
+    extensions: ['.tsx', '.ts', '.js'],
+  },
 };

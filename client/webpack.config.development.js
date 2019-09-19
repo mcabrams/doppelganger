@@ -2,6 +2,7 @@ const path = require('path');
 const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const tsImportPluginFactory = require('ts-import-plugin');
 
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       inject: true,
-      template: 'src/index.html'
+      template: 'src/index.html',
     }),
   ],
   module: {
@@ -28,19 +29,25 @@ module.exports = {
         test: /\.tsx?$/,
         use: {
           loader: 'ts-loader',
-          options: { transpileOnly: true },
+          options: {
+            transpileOnly: true,
+            getCustomTransformers: () => ({
+              before: [tsImportPluginFactory({ style: 'css' })],
+            }),
+          },
         },
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
-    ]
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+    ],
   },
   resolve: {
-    alias: { '@src': path.resolve(__dirname, "src") },
-    extensions: [ '.tsx', '.ts', '.js' ]
+    alias: { '@src': path.resolve(__dirname, 'src') },
+    extensions: ['.tsx', '.ts', '.js'],
   },
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build')
+    path: path.resolve(__dirname, 'build'),
   },
   devServer: {
     clientLogLevel: 'warning',
@@ -49,6 +56,8 @@ module.exports = {
     stats: 'errors-only',
     host: '0.0.0.0',
     port: 8080,
-    disableHostCheck: true, // Don't use this dev server in production, this is necessary for e2e tests to work
+    // Don't use this dev server in production, this is necessary for e2e tests
+    // to work
+    disableHostCheck: true,
   },
 };
