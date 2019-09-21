@@ -1,3 +1,5 @@
+import { Form, Input, Button } from 'antd';
+import { FormComponentProps } from 'antd/es/form';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 
@@ -6,13 +8,15 @@ import {
   CreateUserMutation, useCreateUserMutation, useTokenAuthMutation,
 } from '@src/generated/graphql';
 
-type SignupProps = RouteComponentProps;
+interface SignupFormProps extends FormComponentProps {
+  username: string;
+  password: string;
+  email: string;
+}
 
-const USERNAME_FIELD_NAME = 'username';
-const PASSWORD_FIELD_NAME = 'password';
-const EMAIL_FIELD_NAME = 'email';
-
-export const Signup: React.FC<SignupProps> = ({ navigate }) => {
+export const Signup: React.FC<RouteComponentProps<SignupFormProps>> = (
+  { navigate },
+) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -47,47 +51,62 @@ export const Signup: React.FC<SignupProps> = ({ navigate }) => {
     },
   });
 
+  const itemLayout = {
+    labelCol: { span: 1 },
+    wrapperCol: { span: 4 },
+  };
+
+  const tailLayout = {
+    labelCol: { span: 4 },
+    wrapperCol: { span: 4, offset: 1 },
+  };
+
   return (
-    <div>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          createUser();
-        }}
+    <Form
+      layout="horizontal"
+      onSubmit={e => {
+        e.preventDefault();
+        createUser();
+      }}
+      labelCol={itemLayout.labelCol}
+      wrapperCol={itemLayout.wrapperCol}
+    >
+      <Form.Item label="User">
+        <Input
+          type="text"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+          data-testid="username-input"
+        />
+      </Form.Item>
+      <Form.Item label="Email">
+        <Input
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          data-testid="email-input"
+        />
+      </Form.Item>
+      <Form.Item label="Password">
+        <Input.Password
+          type="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          data-testid="password-input"
+        />
+      </Form.Item>
+      <Form.Item
+        labelCol={tailLayout.labelCol}
+        wrapperCol={tailLayout.wrapperCol}
       >
-        <label htmlFor={USERNAME_FIELD_NAME}>
-          Username
-          <input
-            type="text"
-            id={USERNAME_FIELD_NAME}
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            data-testid="username-input"
-          />
-        </label>
-        <label htmlFor={EMAIL_FIELD_NAME}>
-          Email
-          <input
-            type="email"
-            id={EMAIL_FIELD_NAME}
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            data-testid="email-input"
-          />
-        </label>
-        <label htmlFor={PASSWORD_FIELD_NAME}>
-          Password
-          <input
-            type="password"
-            id={PASSWORD_FIELD_NAME}
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            data-testid="password-input"
-          />
-        </label>
-        <button type="submit" data-testid="signup-submit-button">Signup</button>
-        {error}
-      </form>
-    </div>
+        <Button
+          htmlType="submit"
+          data-testid="signup-submit-button"
+        >
+          Signup
+        </Button>
+      </Form.Item>
+      {error}
+    </Form>
   );
 };

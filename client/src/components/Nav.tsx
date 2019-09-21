@@ -1,3 +1,4 @@
+import { Menu } from 'antd';
 import React from 'react';
 import { Link } from '@reach/router';
 
@@ -11,17 +12,27 @@ export const Nav: React.FC<NavProps> = () => {
   const [isLoggedIn, _] = useIsLoggedIn();
 
   return (
-    <div>
-      <Link to={ROUTES.home}>Home</Link>
+    <Menu mode="horizontal" style={{ lineHeight: '64px' }} theme="dark">
+      <Menu.Item>
+        <Link to={ROUTES.home}>Home</Link>
+      </Menu.Item>
       {!isLoggedIn ? (
-        <>
-          <Link to={ROUTES.login} data-testid="login-nav-link">Login</Link>
-          <Link to={ROUTES.signup} data-testid="signup-nav-link">Signup</Link>
-        </>
+        <Menu.SubMenu title="Login/Signup">
+          <Menu.Item>
+            <Link to={ROUTES.login} data-testid="login-nav-link">Login</Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to={ROUTES.signup} data-testid="signup-nav-link">Signup</Link>
+          </Menu.Item>
+        </Menu.SubMenu>
       ) : (
-        <Logout />
+        <Menu.Item>
+          <Logout />
+        </Menu.Item>
       )}
-      <Link to={ROUTES['user-list']}>User List</Link>
-    </div>
+      <Menu.Item>
+        <Link to={ROUTES['user-list']}>User List</Link>
+      </Menu.Item>
+    </Menu>
   );
 };

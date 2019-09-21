@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import React from 'react';
 
 import { useIsLoggedIn } from '@src/hooks/useIsLoggedIn';
@@ -12,12 +13,11 @@ export const Logout: React.FC<LogoutProps> = () => {
   });
 
   return (
-    <button
-      type="button"
+    <Button
       onClick={() => logout()}
       data-testid="logout-button"
     >
       Logout
-    </button>
+    </Button>
   );
 };
