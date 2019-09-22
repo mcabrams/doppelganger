@@ -1,4 +1,4 @@
-describe('homepage', () => {
+describe('authentication', () => {
   it('supports signup, login and logout', () => {
     /* Test Registration */
     cy.visit('/');
@@ -11,6 +11,12 @@ describe('homepage', () => {
     const username = 'foo';
     const password = 'foobar1234';
     const email = 'foo@example.com';
+
+    cy.get('[data-testid=auth-dropdown-nav-link]')
+      .trigger('mouseover');
+
+    cy.get('[data-testid=signup-nav-link]')
+      .should('be.visible');
 
     cy.get('[data-testid=signup-nav-link]')
       .click();
@@ -31,6 +37,8 @@ describe('homepage', () => {
       .should('eq', Cypress.config().baseUrl + '/');
     cy.get('[data-testid=logout-button]')
       .should('be.visible');
+    cy.get('[data-testid=auth-dropdown-nav-link]')
+      .should('not.be.visible');
     // our auth cookie should be present
     // cy.getCookie('your-session-cookie').should('exist')
 
@@ -38,15 +46,15 @@ describe('homepage', () => {
 
     cy.get('[data-testid=logout-button]')
       .click();
-    cy.get('[data-testid=login-nav-link]')
-      .should('be.visible');
-    cy.get('[data-testid=signup-nav-link]')
+    cy.get('[data-testid=auth-dropdown-nav-link]')
       .should('be.visible');
 
     // TODO: maybe test for clearing cookie here?
 
     /* Test Login */
 
+    cy.get('[data-testid=auth-dropdown-nav-link]')
+      .trigger('mouseover');
     cy.get('[data-testid=login-nav-link]')
       .click();
     cy.url()
