@@ -1,12 +1,13 @@
 import { Form, Input, Button } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 
 import { useIsLoggedIn } from '@src/hooks/useIsLoggedIn';
 import {
   CreateUserMutation, useCreateUserMutation, useTokenAuthMutation,
 } from '@src/generated/graphql';
+import { useRedirectIfLoggedIn } from '@src/hooks/useRedirectIfLoggedIn';
 
 interface SignupFormProps extends FormComponentProps {
   username: string;
@@ -20,14 +21,8 @@ export const Signup: React.FC<RouteComponentProps<SignupFormProps>> = (
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useIsLoggedIn();
-
-  useEffect(() => {
-    // TODO: Raise error here if navigate not defined
-    if (isLoggedIn && navigate) {
-      navigate('/');
-    }
-  });
+  const [_, setIsLoggedIn] = useIsLoggedIn();
+  useRedirectIfLoggedIn(navigate);
 
   const [tokenAuth, { error }] = useTokenAuthMutation({
     variables: { email, password },
@@ -44,7 +39,7 @@ export const Signup: React.FC<RouteComponentProps<SignupFormProps>> = (
     await tokenAuth();
   };
 
-  const [createUser, _] = useCreateUserMutation({
+  const [createUser, __] = useCreateUserMutation({
     variables: { email, password, username },
     onCompleted: data => {
       requestToken(data);

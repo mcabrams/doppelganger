@@ -1,10 +1,11 @@
 import { Form, Input, Button } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 
 import { useIsLoggedIn } from '@src/hooks/useIsLoggedIn';
 import { useTokenAuthMutation } from '@src/generated/graphql';
+import { useRedirectIfLoggedIn } from '@src/hooks/useRedirectIfLoggedIn';
 
 interface LoginFormProps extends FormComponentProps {
   password: string;
@@ -16,14 +17,8 @@ type LoginProps = RouteComponentProps<LoginFormProps>;
 export const Login: React.FC<LoginProps> = ({ navigate }) => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useIsLoggedIn();
-
-  useEffect(() => {
-    // TODO: Raise error here if navigate not defined
-    if (isLoggedIn && navigate) {
-      navigate('/');
-    }
-  });
+  const [_, setIsLoggedIn] = useIsLoggedIn();
+  useRedirectIfLoggedIn(navigate);
 
   const [tokenAuth, __] = useTokenAuthMutation({
     variables: { email, password },

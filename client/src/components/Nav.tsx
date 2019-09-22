@@ -16,6 +16,9 @@ export const Nav: React.FC<NavProps> = () => {
       <Menu.Item>
         <Link to={ROUTES.home}>Home</Link>
       </Menu.Item>
+      <Menu.Item>
+        <Link to={ROUTES.quiz}>Quiz</Link>
+      </Menu.Item>
       {!isLoggedIn ? (
         <Menu.SubMenu
           title="Login/Signup"

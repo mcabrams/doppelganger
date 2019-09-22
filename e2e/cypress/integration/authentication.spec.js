@@ -79,4 +79,27 @@ describe('authentication', () => {
     cy.get('[data-testid=logout-button]')
       .should('be.visible');
   });
+
+  it('redirects from protected routes to signup and then to referrer', () => {
+    const username = 'foo_2';
+    const password = 'foobar1234_2';
+    const email = 'foo_2@example.com';
+
+    // Visit protected route
+    cy.visit('/quiz');
+    cy.url()
+      .should('eq', Cypress.config().baseUrl + '/signup');
+
+    cy.get('[data-testid=username-input]')
+      .type(username);
+    cy.get('[data-testid=password-input]')
+      .type(password);
+    cy.get('[data-testid=email-input]')
+      .type(email);
+    cy.get('[data-testid=signup-submit-button]')
+      .click();
+
+    cy.url()
+      .should('eq', Cypress.config().baseUrl + '/quiz');
+  });
 });

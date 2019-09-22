@@ -6,4 +6,5 @@ export const ROUTES = {
   signup: '/signup',
   'user-list': '/users',
   csrftoken: `${env('API_SERVER_URL')}/admin`,
+  quiz: '/quiz',
 };
