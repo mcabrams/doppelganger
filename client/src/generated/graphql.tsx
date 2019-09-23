@@ -18,6 +18,11 @@ export type Scalars = {
   GenericScalar: any,
 };
 
+export type AnswerType = {
+   __typename?: 'AnswerType',
+  text: Scalars['String'],
+};
+
 export type CreateUser = {
    __typename?: 'CreateUser',
   user?: Maybe<UserType>,
@@ -74,6 +79,13 @@ export type Query = {
    __typename?: 'Query',
   getUserList?: Maybe<Array<UserPublicType>>,
   getProtectedUserList?: Maybe<Array<UserType>>,
+  getQuestionList?: Maybe<Array<QuestionType>>,
+};
+
+export type QuestionType = {
+   __typename?: 'QuestionType',
+  text: Scalars['String'],
+  answerSet: Array<AnswerType>,
 };
 
 export type Refresh = {
