@@ -77,15 +77,15 @@ export type ObtainJsonWebToken = {
 
 export type Query = {
    __typename?: 'Query',
-  userList?: Maybe<Array<UserPublicType>>,
-  protectedUserList?: Maybe<Array<UserType>>,
-  questionList?: Maybe<Array<QuestionType>>,
+  users?: Maybe<Array<UserPublicType>>,
+  protectedUsers?: Maybe<Array<UserType>>,
+  questions?: Maybe<Array<QuestionType>>,
 };
 
 export type QuestionType = {
    __typename?: 'QuestionType',
   text: Scalars['String'],
-  answerSet: Array<AnswerType>,
+  answers: Array<AnswerType>,
 };
 
 export type Refresh = {
@@ -163,17 +163,17 @@ export type TokenAuthResponseFragment = (
   & Pick<ObtainJsonWebToken, 'token'>
 );
 
-export type UserListQueryVariables = {};
+export type UsersQueryVariables = {};
 
 
-export type UserListQuery = (
+export type UsersQuery = (
   { __typename?: 'Query' }
-  & { userList: Maybe<Array<{ __typename?: 'UserPublicType' }
-    & UserListResponseFragment
+  & { users: Maybe<Array<{ __typename?: 'UserPublicType' }
+    & UsersResponseFragment
   >> }
 );
 
-export type UserListResponseFragment = (
+export type UsersResponseFragment = (
   { __typename?: 'UserPublicType' }
   & Pick<UserPublicType, 'username'>
 );
@@ -190,8 +190,8 @@ export const TokenAuthResponseFragmentDoc = gql`
   token
 }
     `;
-export const UserListResponseFragmentDoc = gql`
-    fragment UserListResponse on UserPublicType {
+export const UsersResponseFragmentDoc = gql`
+    fragment UsersResponse on UserPublicType {
   username
 }
     `;
@@ -240,20 +240,20 @@ export type TokenAuthMutationFn = ApolloReactCommon.MutationFunction<TokenAuthMu
 export type TokenAuthMutationHookResult = ReturnType<typeof useTokenAuthMutation>;
 export type TokenAuthMutationResult = ApolloReactCommon.MutationResult<TokenAuthMutation>;
 export type TokenAuthMutationOptions = ApolloReactCommon.BaseMutationOptions<TokenAuthMutation, TokenAuthMutationVariables>;
-export const UserListDocument = gql`
-    query UserList {
-  userList {
-    ...UserListResponse
+export const UsersDocument = gql`
+    query Users {
+  users {
+    ...UsersResponse
   }
 }
-    ${UserListResponseFragmentDoc}`;
+    ${UsersResponseFragmentDoc}`;
 
-    export function useUserListQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserListQuery, UserListQueryVariables>) {
-      return ApolloReactHooks.useQuery<UserListQuery, UserListQueryVariables>(UserListDocument, baseOptions);
+    export function useUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+      return ApolloReactHooks.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
     }
-      export function useUserListLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserListQuery, UserListQueryVariables>) {
-        return ApolloReactHooks.useLazyQuery<UserListQuery, UserListQueryVariables>(UserListDocument, baseOptions);
+      export function useUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+        return ApolloReactHooks.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
       }
       
-export type UserListQueryHookResult = ReturnType<typeof useUserListQuery>;
-export type UserListQueryResult = ApolloReactCommon.QueryResult<UserListQuery, UserListQueryVariables>;
+export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
+export type UsersQueryResult = ApolloReactCommon.QueryResult<UsersQuery, UsersQueryVariables>;

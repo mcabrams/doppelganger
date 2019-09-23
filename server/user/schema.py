@@ -19,14 +19,14 @@ class UserPublicType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    user_list = graphene.List(graphene.NonNull(UserPublicType))
-    protected_user_list = graphene.List(graphene.NonNull(UserType))
+    users = graphene.List(graphene.NonNull(UserPublicType))
+    protected_users = graphene.List(graphene.NonNull(UserType))
 
-    def resolve_user_list(self, info, **kwargs):
+    def resolve_users(self, info, **kwargs):
         return models.User.objects.all()
 
     @superuser_required
-    def resolve_protected_user_list(self, info, **kwargs):
+    def resolve_protected_users(self, info, **kwargs):
         return models.User.objects.all()
 
 

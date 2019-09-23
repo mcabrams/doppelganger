@@ -70,7 +70,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "userList",
+              "name": "users",
               "type": {
                 "kind": "LIST",
                 "name": null,
@@ -90,7 +90,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "protectedUserList",
+              "name": "protectedUsers",
               "type": {
                 "kind": "LIST",
                 "name": null,
@@ -110,7 +110,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "questionList",
+              "name": "questions",
               "type": {
                 "kind": "LIST",
                 "name": null,
@@ -253,7 +253,7 @@
               "deprecationReason": null,
               "description": "",
               "isDeprecated": false,
-              "name": "answerSet",
+              "name": "answers",
               "type": {
                 "kind": "NON_NULL",
                 "name": null,
