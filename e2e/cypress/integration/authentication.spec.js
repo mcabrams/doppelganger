@@ -1,8 +1,21 @@
 describe('authentication', () => {
+  beforeEach(() => {
+    cy.visit('/');
+    let loggedIn = false;
+    cy.get('body').then($body => {
+      if ($body.find('[data-testid=logout-button]').length === 1) {
+        loggedIn = true;
+        cy.log('Logged in, logging out...');
+      }
+    });
+
+    if (loggedIn) {
+      cy.get('[data-testid=logout-button]').click();
+    }
+  });
+
   it('supports signup, login and logout', () => {
     /* Test Registration */
-    cy.visit('/');
-
     cy.get('#root')
       .should('contain', 'Hello world');
 
@@ -81,12 +94,14 @@ describe('authentication', () => {
   });
 
   it('redirects from protected routes to signup and then to referrer', () => {
-    const username = 'foo_2';
-    const password = 'foobar1234_2';
-    const email = 'foo_2@example.com';
+    const username = 'foo2';
+    const password = 'foobar12342';
+    const email = 'foo2@example.com';
 
     // Visit protected route
-    cy.visit('/quiz');
+    cy.get('[data-testid=quiz-nav-link]')
+      .click();
+
     cy.url()
       .should('eq', Cypress.config().baseUrl + '/signup');
 
