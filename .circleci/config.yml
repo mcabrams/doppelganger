@@ -25,7 +25,7 @@ jobs:
 
       - run:
           name: e2e tests
-          command: ./e2e/test.sh
+          command: ./e2e/test.sh --no-cleanup
 
       - store_artifacts:
           path: e2e/cypress/videos
