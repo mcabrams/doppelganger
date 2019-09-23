@@ -1,13 +1,13 @@
 import React from 'react';
 import { RouteComponentProps } from '@reach/router';
 
-import { useGetUserListQuery } from '@src/generated/graphql';
+import { useUserListQuery } from '@src/generated/graphql';
 
 type UserListProps = RouteComponentProps;
 
 export const UserList: React.FC<UserListProps> = () => {
-  const { data, error } = useGetUserListQuery();
-  const userList = data && data.getUserList;
+  const { data, error } = useUserListQuery();
+  const userList = data && data.userList;
 
   return (
     <div>

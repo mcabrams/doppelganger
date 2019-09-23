@@ -5,10 +5,10 @@ from tests.helpers import DoppelgangerGraphQLTestCase
 from .factories import AnswerFactory, QuestionFactory
 
 
-class GetQuestionListTestCase(DoppelgangerGraphQLTestCase):
-    op_name = 'getQuestionList'
+class questionListTestCase(DoppelgangerGraphQLTestCase):
+    op_name = 'questionList'
 
-    def test_get_question_list_can_return_nested_answers(self):
+    def test_question_list_can_return_nested_answers(self):
         question = QuestionFactory()
         answer1 = AnswerFactory(question=question)
         answer2 = AnswerFactory(question=question)
@@ -16,7 +16,7 @@ class GetQuestionListTestCase(DoppelgangerGraphQLTestCase):
         response = self.query(
             '''
             query {
-                getQuestionList {
+                questionList {
                     text
                     answerSet {
                         text

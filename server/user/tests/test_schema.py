@@ -9,20 +9,20 @@ from tests.helpers import (
 from .factories import UserFactory
 
 
-class GetUserListTestCase(DoppelgangerGraphQLTestCase):
-    op_name = 'getUserList'
+class UserListTestCase(DoppelgangerGraphQLTestCase):
+    op_name = 'userList'
 
-    def test_get_user_list_can_return_username(self):
+    def test_user_list_can_return_username(self):
         UserFactory(username='foobar')
         response = self.query(
             '''
             query {
-                getUserList {
+                userList {
                     username
                 }
             }
             ''',
-            op_name='getUserList',
+            op_name='userList',
         )
 
         content = json.loads(response.content)
@@ -32,19 +32,19 @@ class GetUserListTestCase(DoppelgangerGraphQLTestCase):
 
     def test_attempting_to_return_password_fails(self):
         UserFactory(username='foobar')
-        response = self.query_get_user_list('password')
+        response = self.query_user_list('password')
         self.assertResponseHasErrors(response)
 
     def test_attempting_to_return_email_fails(self):
         UserFactory(username='foobar')
-        response = self.query_get_user_list('email')
+        response = self.query_user_list('email')
         self.assertResponseHasErrors(response)
 
-    def query_get_user_list(self, query):
+    def query_user_list(self, query):
         query = (
             '''
             query {
-                getUserList {
+                userList {
             '''
             f'''
                     {query}
@@ -57,20 +57,20 @@ class GetUserListTestCase(DoppelgangerGraphQLTestCase):
         return self.query(query, self.op_name)
 
 
-class GetProtectedUserListTestCase(DoppelgangerJSONWebTokenTestCase):
-    op_name = 'getProtectedUserList'
+class ProtectedUserListTestCase(DoppelgangerJSONWebTokenTestCase):
+    op_name = 'protectedUserList'
 
     def setUp(self):
         UserFactory(username='foobar', email='foobar@example.com')
 
     def test_attempting_to_return_email_fails_when_unauthenticated(self):
-        result = self.query_get_protected_user_list('email')
+        result = self.query_protected_user_list('email')
         self.assertIsNone(result.data[self.op_name])
 
     def test_attempting_to_return_email_fails_when_not_superuser(self):
         non_superuser = UserFactory(password='password')
         self.client.authenticate(non_superuser)
-        result = self.query_get_protected_user_list('email')
+        result = self.query_protected_user_list('email')
         self.assertIsNone(result.data[self.op_name])
 
     def test_attempting_to_return_email_succeeds_when_superuser(self):
@@ -79,17 +79,17 @@ class GetProtectedUserListTestCase(DoppelgangerJSONWebTokenTestCase):
             email='foobar2@example.com',
             password='password')
         self.client.authenticate(superuser)
-        result = self.query_get_protected_user_list('email')
+        result = self.query_protected_user_list('email')
         self.assertEqual(result.data[self.op_name], [
             {'email': 'foobar@example.com'},
             {'email': 'foobar2@example.com'},
         ])
 
-    def query_get_protected_user_list(self, query):
+    def query_protected_user_list(self, query):
         query = (
             '''
             query {
-                getProtectedUserList {
+                protectedUserList {
             '''
             f'''
                     {query}

@@ -17,7 +17,7 @@ class AnswerType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    get_question_list = graphene.List(graphene.NonNull(QuestionType))
+    question_list = graphene.List(graphene.NonNull(QuestionType))
 
-    def resolve_get_question_list(self, info, **kwargs):
+    def resolve_question_list(self, info, **kwargs):
         return models.Question.objects.all()

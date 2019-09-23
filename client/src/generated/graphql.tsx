@@ -77,9 +77,9 @@ export type ObtainJsonWebToken = {
 
 export type Query = {
    __typename?: 'Query',
-  getUserList?: Maybe<Array<UserPublicType>>,
-  getProtectedUserList?: Maybe<Array<UserType>>,
-  getQuestionList?: Maybe<Array<QuestionType>>,
+  userList?: Maybe<Array<UserPublicType>>,
+  protectedUserList?: Maybe<Array<UserType>>,
+  questionList?: Maybe<Array<QuestionType>>,
 };
 
 export type QuestionType = {
@@ -134,21 +134,6 @@ export type CreateUserResponseFragment = (
   )> }
 );
 
-export type GetUserListQueryVariables = {};
-
-
-export type GetUserListQuery = (
-  { __typename?: 'Query' }
-  & { getUserList: Maybe<Array<{ __typename?: 'UserPublicType' }
-    & GetUserListResponseFragment
-  >> }
-);
-
-export type GetUserListResponseFragment = (
-  { __typename?: 'UserPublicType' }
-  & Pick<UserPublicType, 'username'>
-);
-
 export type LogoutMutationVariables = {};
 
 
@@ -177,6 +162,21 @@ export type TokenAuthResponseFragment = (
   { __typename?: 'ObtainJSONWebToken' }
   & Pick<ObtainJsonWebToken, 'token'>
 );
+
+export type UserListQueryVariables = {};
+
+
+export type UserListQuery = (
+  { __typename?: 'Query' }
+  & { userList: Maybe<Array<{ __typename?: 'UserPublicType' }
+    & UserListResponseFragment
+  >> }
+);
+
+export type UserListResponseFragment = (
+  { __typename?: 'UserPublicType' }
+  & Pick<UserPublicType, 'username'>
+);
 export const CreateUserResponseFragmentDoc = gql`
     fragment CreateUserResponse on CreateUser {
   user {
@@ -185,14 +185,14 @@ export const CreateUserResponseFragmentDoc = gql`
   }
 }
     `;
-export const GetUserListResponseFragmentDoc = gql`
-    fragment GetUserListResponse on UserPublicType {
-  username
-}
-    `;
 export const TokenAuthResponseFragmentDoc = gql`
     fragment TokenAuthResponse on ObtainJSONWebToken {
   token
+}
+    `;
+export const UserListResponseFragmentDoc = gql`
+    fragment UserListResponse on UserPublicType {
+  username
 }
     `;
 export const CreateUserDocument = gql`
@@ -210,23 +210,6 @@ export type CreateUserMutationFn = ApolloReactCommon.MutationFunction<CreateUser
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = ApolloReactCommon.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
-export const GetUserListDocument = gql`
-    query GetUserList {
-  getUserList {
-    ...GetUserListResponse
-  }
-}
-    ${GetUserListResponseFragmentDoc}`;
-
-    export function useGetUserListQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetUserListQuery, GetUserListQueryVariables>) {
-      return ApolloReactHooks.useQuery<GetUserListQuery, GetUserListQueryVariables>(GetUserListDocument, baseOptions);
-    }
-      export function useGetUserListLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUserListQuery, GetUserListQueryVariables>) {
-        return ApolloReactHooks.useLazyQuery<GetUserListQuery, GetUserListQueryVariables>(GetUserListDocument, baseOptions);
-      }
-      
-export type GetUserListQueryHookResult = ReturnType<typeof useGetUserListQuery>;
-export type GetUserListQueryResult = ApolloReactCommon.QueryResult<GetUserListQuery, GetUserListQueryVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout {
@@ -257,3 +240,20 @@ export type TokenAuthMutationFn = ApolloReactCommon.MutationFunction<TokenAuthMu
 export type TokenAuthMutationHookResult = ReturnType<typeof useTokenAuthMutation>;
 export type TokenAuthMutationResult = ApolloReactCommon.MutationResult<TokenAuthMutation>;
 export type TokenAuthMutationOptions = ApolloReactCommon.BaseMutationOptions<TokenAuthMutation, TokenAuthMutationVariables>;
+export const UserListDocument = gql`
+    query UserList {
+  userList {
+    ...UserListResponse
+  }
+}
+    ${UserListResponseFragmentDoc}`;
+
+    export function useUserListQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserListQuery, UserListQueryVariables>) {
+      return ApolloReactHooks.useQuery<UserListQuery, UserListQueryVariables>(UserListDocument, baseOptions);
+    }
+      export function useUserListLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserListQuery, UserListQueryVariables>) {
+        return ApolloReactHooks.useLazyQuery<UserListQuery, UserListQueryVariables>(UserListDocument, baseOptions);
+      }
+      
+export type UserListQueryHookResult = ReturnType<typeof useUserListQuery>;
+export type UserListQueryResult = ApolloReactCommon.QueryResult<UserListQuery, UserListQueryVariables>;

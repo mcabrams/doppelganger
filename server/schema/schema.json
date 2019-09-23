@@ -70,7 +70,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "getUserList",
+              "name": "userList",
               "type": {
                 "kind": "LIST",
                 "name": null,
@@ -90,7 +90,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "getProtectedUserList",
+              "name": "protectedUserList",
               "type": {
                 "kind": "LIST",
                 "name": null,
@@ -110,7 +110,7 @@
               "deprecationReason": null,
               "description": null,
               "isDeprecated": false,
-              "name": "getQuestionList",
+              "name": "questionList",
               "type": {
                 "kind": "LIST",
                 "name": null,
