@@ -1,21 +1,12 @@
 import json
 
 from django.contrib.auth import get_user_model
-from graphene_django.utils.testing import GraphQLTestCase
-from graphql_jwt.testcases import JSONWebTokenTestCase
 
-from doppelganger.schema import schema
+from tests.helpers import (
+    DoppelgangerGraphQLTestCase, DoppelgangerJSONWebTokenTestCase,
+)
 
 from .factories import UserFactory
-
-
-class DoppelgangerGraphQLTestCase(GraphQLTestCase):
-    GRAPHQL_SCHEMA = schema
-    GRAPHQL_URL = '/graphql'
-
-
-class DoppelgangerJSONWebTokenTestCase(JSONWebTokenTestCase):
-    pass
 
 
 class GetUserListTestCase(DoppelgangerGraphQLTestCase):
