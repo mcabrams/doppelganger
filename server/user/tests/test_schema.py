@@ -18,7 +18,11 @@ class UsersTestCase(DoppelgangerGraphQLTestCase):
             '''
             query {
                 users {
-                    username
+                    edges {
+                        node {
+                            username
+                        }
+                    }
                 }
             }
             ''',
@@ -26,8 +30,10 @@ class UsersTestCase(DoppelgangerGraphQLTestCase):
         )
 
         content = json.loads(response.content)
-        self.assertEqual(content['data'][self.op_name], [{
-            'username': 'foobar',
+        self.assertEqual(content['data'][self.op_name]['edges'], [{
+            'node': {
+                'username': 'foobar',
+            }
         }])
 
     def test_attempting_to_return_password_fails(self):
@@ -80,21 +86,43 @@ class ProtectedUsersTestCase(DoppelgangerJSONWebTokenTestCase):
             password='password')
         self.client.authenticate(superuser)
         result = self.query_protected_users('email')
-        self.assertEqual(result.data[self.op_name], [
-            {'email': 'foobar@example.com'},
-            {'email': 'foobar2@example.com'},
+        self.assertEqual(result.data[self.op_name]['edges'], [
+            {
+                'node': {'email': 'foobar@example.com'},
+            },
+            {
+                'node': {'email': 'foobar2@example.com'},
+            }
         ])
+
+    def test_page_info_has_next_page_works(self):
+        superuser = get_user_model().objects.create_superuser(
+            username='foobar2',
+            email='foobar2@example.com',
+            password='password')
+        self.client.authenticate(superuser)
+        result = self.query_protected_users('email')
+        self.assertEqual(result.data[self.op_name]['pageInfo'], {
+            'hasNextPage': False,
+        })
 
     def query_protected_users(self, query):
         query = (
             '''
             query {
                 protectedUsers {
+                    pageInfo {
+                        hasNextPage
+                    }
+                    edges {
+                        node {
             '''
             f'''
-                    {query}
+                            {query}
             '''
             '''
+                        }
+                    }
                 }
             }
             '''

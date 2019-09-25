@@ -17,9 +17,13 @@ class QuestionsTestCase(DoppelgangerGraphQLTestCase):
             '''
             query {
                 questions {
-                    text
-                    answers {
-                        text
+                    edges {
+                        node {
+                            text
+                            answers {
+                                text
+                            }
+                        }
                     }
                 }
             }
@@ -28,10 +32,12 @@ class QuestionsTestCase(DoppelgangerGraphQLTestCase):
         )
 
         content = json.loads(response.content)
-        self.assertEqual(content['data'][self.op_name], [{
-            'text': question.text,
-            'answers': [
-                {'text': answer2.text},
-                {'text': answer1.text},
-            ],
+        self.assertEqual(content['data'][self.op_name]['edges'], [{
+            'node': {
+                'text': question.text,
+                'answers': [
+                    {'text': answer2.text},
+                    {'text': answer1.text},
+                ],
+            }
         }])

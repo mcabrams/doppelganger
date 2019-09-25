@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 import graphene
+from graphene import relay
 from graphene_django.types import DjangoObjectType
 from graphql_jwt.decorators import superuser_required
 
@@ -10,17 +11,32 @@ class UserType(DjangoObjectType):
     class Meta:
         model = models.User
         fields = ('username', 'password', 'email')
+        interfaces = (relay.Node,)
+
+
+class UserConnection(relay.Connection):
+    class Meta:
+        node = UserType
+
+    # TODO: https://github.com/graphql-python/graphene/issues/968
+    #  edges = graphene.List(graphene.NonNull(PostEdge), required=True)
 
 
 class UserPublicType(DjangoObjectType):
     class Meta:
         model = models.User
         fields = ('username',)
+        interfaces = (relay.Node,)
+
+
+class UserPublicConnection(relay.Connection):
+    class Meta:
+        node = UserPublicType
 
 
 class Query(graphene.ObjectType):
-    users = graphene.List(graphene.NonNull(UserPublicType))
-    protected_users = graphene.List(graphene.NonNull(UserType))
+    users = relay.ConnectionField(UserPublicConnection)
+    protected_users = relay.ConnectionField(UserConnection)
 
     def resolve_users(self, info, **kwargs):
         return models.User.objects.all()
