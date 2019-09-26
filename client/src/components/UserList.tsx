@@ -11,8 +11,10 @@ export const UserList: React.FC<UserListProps> = () => {
 
   return (
     <div>
-      {users && users.map(user => (
-        <p key={user.username}>{user.username}</p>
+      {users && users.edges.map(edge => (
+        edge && edge.node && (
+          <p key={edge.node.username}>{edge.node.username}</p>
+        )
       ))}
       {error}
     </div>
