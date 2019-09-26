@@ -245,6 +245,27 @@ export type LogoutMutation = (
   )> }
 );
 
+export type QuestionsQueryVariables = {};
+
+
+export type QuestionsQuery = (
+  { __typename?: 'Query' }
+  & { questions: Maybe<(
+    { __typename?: 'QuestionConnection' }
+    & { edges: Array<Maybe<(
+      { __typename?: 'QuestionEdge' }
+      & { node: Maybe<{ __typename?: 'QuestionType' }
+        & QuestionsResponseFragment
+      > }
+    )>> }
+  )> }
+);
+
+export type QuestionsResponseFragment = (
+  { __typename?: 'QuestionType' }
+  & Pick<QuestionType, 'text'>
+);
+
 export type TokenAuthMutationVariables = {
   email: Scalars['String'],
   password: Scalars['String']
@@ -291,6 +312,11 @@ export const CreateUserResponseFragmentDoc = gql`
   }
 }
     `;
+export const QuestionsResponseFragmentDoc = gql`
+    fragment QuestionsResponse on QuestionType {
+  text
+}
+    `;
 export const TokenAuthResponseFragmentDoc = gql`
     fragment TokenAuthResponse on ObtainJSONWebToken {
   token
@@ -331,6 +357,27 @@ export type LogoutMutationFn = ApolloReactCommon.MutationFunction<LogoutMutation
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const QuestionsDocument = gql`
+    query Questions {
+  questions {
+    edges {
+      node {
+        ...QuestionsResponse
+      }
+    }
+  }
+}
+    ${QuestionsResponseFragmentDoc}`;
+
+    export function useQuestionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<QuestionsQuery, QuestionsQueryVariables>) {
+      return ApolloReactHooks.useQuery<QuestionsQuery, QuestionsQueryVariables>(QuestionsDocument, baseOptions);
+    }
+      export function useQuestionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<QuestionsQuery, QuestionsQueryVariables>) {
+        return ApolloReactHooks.useLazyQuery<QuestionsQuery, QuestionsQueryVariables>(QuestionsDocument, baseOptions);
+      }
+      
+export type QuestionsQueryHookResult = ReturnType<typeof useQuestionsQuery>;
+export type QuestionsQueryResult = ApolloReactCommon.QueryResult<QuestionsQuery, QuestionsQueryVariables>;
 export const TokenAuthDocument = gql`
     mutation TokenAuth($email: String!, $password: String!) {
   tokenAuth(email: $email, password: $password) {
