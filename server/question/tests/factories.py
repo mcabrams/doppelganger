@@ -10,6 +10,16 @@ class QuestionFactory(factory.DjangoModelFactory):
         model = Question
 
     text = factory.Faker('paragraph', nb_sentences=1)
+    questions = None
+
+    class Params:
+        with_answers = factory.Trait(
+            questions=factory.RelatedFactoryList(
+                'question.tests.factories.AnswerFactory',
+                factory_related_name='question',
+                size=2,
+            )
+        )
 
 
 class AnswerFactory(factory.DjangoModelFactory):

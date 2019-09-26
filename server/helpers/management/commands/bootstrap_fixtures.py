@@ -11,11 +11,11 @@ class Command(BaseCommand):
     '''
 
     def handle(self, *args, **options):
+        # question
+        QuestionFactory.create_batch(size=20, with_answers=True)
+
         # user
         get_user_model().objects.create_superuser(
             username='foobar',
             email='foobar@example.com',
             password='foobar1234')
-
-        # question
-        QuestionFactory.create_batch(size=20)
