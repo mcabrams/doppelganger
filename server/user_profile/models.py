@@ -5,4 +5,8 @@ from user.models import User
 
 
 class UserProfile(TimeStampedModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='profile',
+    )

@@ -4,6 +4,7 @@ from graphene import relay
 from graphene_django.types import DjangoObjectType
 from graphql_jwt.decorators import superuser_required
 
+from user_profile.models import UserProfile
 from . import models
 
 
@@ -72,6 +73,7 @@ class CreateUser(graphene.Mutation):
         )
         user.set_password(password)
         user.save()
+        UserProfile.objects.create(user=user)
 
         return CreateUser(user=user)
 

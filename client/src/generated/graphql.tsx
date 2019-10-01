@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
+
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string,
@@ -18,9 +19,23 @@ export type Scalars = {
   GenericScalar: any,
 };
 
+export type AnsweredQuestionType = {
+   __typename?: 'AnsweredQuestionType',
+  id: Scalars['ID'],
+  question: QuestionType,
+  answer: AnswerType,
+};
+
 export type AnswerType = {
    __typename?: 'AnswerType',
+  id: Scalars['ID'],
   text: Scalars['String'],
+  pk: Scalars['Int'],
+};
+
+export type CreateAnsweredQuestion = {
+   __typename?: 'CreateAnsweredQuestion',
+  answeredQuestion?: Maybe<AnsweredQuestionType>,
 };
 
 export type CreateUser = {
@@ -40,6 +55,7 @@ export type Mutation = {
   createUser?: Maybe<CreateUser>,
   /** The real action happens in our custom GraphQLView  */
   logout?: Maybe<Logout>,
+  createAnsweredQuestion?: Maybe<CreateAnsweredQuestion>,
   /** Obtain JSON Web Token mutation */
   tokenAuth?: Maybe<ObtainJsonWebToken>,
   verifyToken?: Maybe<Verify>,
@@ -51,6 +67,12 @@ export type MutationCreateUserArgs = {
   email: Scalars['String'],
   password: Scalars['String'],
   username: Scalars['String']
+};
+
+
+export type MutationCreateAnsweredQuestionArgs = {
+  answerId?: Maybe<Scalars['Int']>,
+  questionId?: Maybe<Scalars['Int']>
 };
 
 
@@ -144,10 +166,11 @@ export type QuestionEdge = {
 
 export type QuestionType = Node & {
    __typename?: 'QuestionType',
-  text: Scalars['String'],
-  answers: Array<AnswerType>,
   /** The ID of the object. */
   id: Scalars['ID'],
+  text: Scalars['String'],
+  answers: Array<AnswerType>,
+  pk: Scalars['Int'],
 };
 
 export type Refresh = {
@@ -212,6 +235,29 @@ export type Verify = {
    __typename?: 'Verify',
   payload?: Maybe<Scalars['GenericScalar']>,
 };
+
+export type CreateAnsweredQuestionMutationVariables = {
+  questionId: Scalars['Int'],
+  answerId: Scalars['Int']
+};
+
+
+export type CreateAnsweredQuestionMutation = (
+  { __typename?: 'Mutation' }
+  & { createAnsweredQuestion: Maybe<(
+    { __typename?: 'CreateAnsweredQuestion' }
+    & { answeredQuestion: Maybe<(
+      { __typename?: 'AnsweredQuestionType' }
+      & CreateAnsweredQuestionResponseFragment
+    )> }
+  )> }
+);
+
+export type CreateAnsweredQuestionResponseFragment = (
+  { __typename?: 'AnsweredQuestionType' }
+  & Pick<AnsweredQuestionType, 'id'>
+);
+
 export type CreateUserMutationVariables = {
   email: Scalars['String'],
   password: Scalars['String'],
@@ -221,9 +267,10 @@ export type CreateUserMutationVariables = {
 
 export type CreateUserMutation = (
   { __typename?: 'Mutation' }
-  & { createUser: Maybe<{ __typename?: 'CreateUser' }
+  & { createUser: Maybe<(
+    { __typename?: 'CreateUser' }
     & CreateUserResponseFragment
-  > }
+  )> }
 );
 
 export type CreateUserResponseFragment = (
@@ -245,25 +292,30 @@ export type LogoutMutation = (
   )> }
 );
 
-export type QuestionsQueryVariables = {};
+export type QuizQueryVariables = {};
 
 
-export type QuestionsQuery = (
+export type QuizQuery = (
   { __typename?: 'Query' }
   & { questions: Maybe<(
     { __typename?: 'QuestionConnection' }
     & { edges: Array<Maybe<(
       { __typename?: 'QuestionEdge' }
-      & { node: Maybe<{ __typename?: 'QuestionType' }
-        & QuestionsResponseFragment
-      > }
+      & { node: Maybe<(
+        { __typename?: 'QuestionType' }
+        & QuizResponseFragment
+      )> }
     )>> }
   )> }
 );
 
-export type QuestionsResponseFragment = (
+export type QuizResponseFragment = (
   { __typename?: 'QuestionType' }
-  & Pick<QuestionType, 'text'>
+  & Pick<QuestionType, 'id' | 'pk' | 'text'>
+  & { answers: Array<(
+    { __typename?: 'AnswerType' }
+    & Pick<AnswerType, 'pk' | 'text'>
+  )> }
 );
 
 export type TokenAuthMutationVariables = {
@@ -274,9 +326,10 @@ export type TokenAuthMutationVariables = {
 
 export type TokenAuthMutation = (
   { __typename?: 'Mutation' }
-  & { tokenAuth: Maybe<{ __typename?: 'ObtainJSONWebToken' }
+  & { tokenAuth: Maybe<(
+    { __typename?: 'ObtainJSONWebToken' }
     & TokenAuthResponseFragment
-  > }
+  )> }
 );
 
 export type TokenAuthResponseFragment = (
@@ -293,9 +346,10 @@ export type UsersQuery = (
     { __typename?: 'UserPublicConnection' }
     & { edges: Array<Maybe<(
       { __typename?: 'UserPublicEdge' }
-      & { node: Maybe<{ __typename?: 'UserPublicType' }
+      & { node: Maybe<(
+        { __typename?: 'UserPublicType' }
         & UsersResponseFragment
-      > }
+      )> }
     )>> }
   )> }
 );
@@ -304,6 +358,12 @@ export type UsersResponseFragment = (
   { __typename?: 'UserPublicType' }
   & Pick<UserPublicType, 'username'>
 );
+
+export const CreateAnsweredQuestionResponseFragmentDoc = gql`
+    fragment CreateAnsweredQuestionResponse on AnsweredQuestionType {
+  id
+}
+    `;
 export const CreateUserResponseFragmentDoc = gql`
     fragment CreateUserResponse on CreateUser {
   user {
@@ -312,9 +372,15 @@ export const CreateUserResponseFragmentDoc = gql`
   }
 }
     `;
-export const QuestionsResponseFragmentDoc = gql`
-    fragment QuestionsResponse on QuestionType {
+export const QuizResponseFragmentDoc = gql`
+    fragment QuizResponse on QuestionType {
+  id
+  pk
   text
+  answers {
+    pk
+    text
+  }
 }
     `;
 export const TokenAuthResponseFragmentDoc = gql`
@@ -327,6 +393,41 @@ export const UsersResponseFragmentDoc = gql`
   username
 }
     `;
+export const CreateAnsweredQuestionDocument = gql`
+    mutation CreateAnsweredQuestion($questionId: Int!, $answerId: Int!) {
+  createAnsweredQuestion(questionId: $questionId, answerId: $answerId) {
+    answeredQuestion {
+      ...CreateAnsweredQuestionResponse
+    }
+  }
+}
+    ${CreateAnsweredQuestionResponseFragmentDoc}`;
+export type CreateAnsweredQuestionMutationFn = ApolloReactCommon.MutationFunction<CreateAnsweredQuestionMutation, CreateAnsweredQuestionMutationVariables>;
+
+/**
+ * __useCreateAnsweredQuestionMutation__
+ *
+ * To run a mutation, you first call `useCreateAnsweredQuestionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAnsweredQuestionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAnsweredQuestionMutation, { data, loading, error }] = useCreateAnsweredQuestionMutation({
+ *   variables: {
+ *      questionId: // value for 'questionId'
+ *      answerId: // value for 'answerId'
+ *   },
+ * });
+ */
+export function useCreateAnsweredQuestionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateAnsweredQuestionMutation, CreateAnsweredQuestionMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateAnsweredQuestionMutation, CreateAnsweredQuestionMutationVariables>(CreateAnsweredQuestionDocument, baseOptions);
+      }
+export type CreateAnsweredQuestionMutationHookResult = ReturnType<typeof useCreateAnsweredQuestionMutation>;
+export type CreateAnsweredQuestionMutationResult = ApolloReactCommon.MutationResult<CreateAnsweredQuestionMutation>;
+export type CreateAnsweredQuestionMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateAnsweredQuestionMutation, CreateAnsweredQuestionMutationVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($email: String!, $password: String!, $username: String!) {
   createUser(email: $email, password: $password, username: $username) {
@@ -336,9 +437,28 @@ export const CreateUserDocument = gql`
     ${CreateUserResponseFragmentDoc}`;
 export type CreateUserMutationFn = ApolloReactCommon.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
 
-    export function useCreateUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
-      return ApolloReactHooks.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, baseOptions);
-    }
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, baseOptions);
+      }
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = ApolloReactCommon.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
@@ -351,33 +471,64 @@ export const LogoutDocument = gql`
     `;
 export type LogoutMutationFn = ApolloReactCommon.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
-    export function useLogoutMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-      return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
-    }
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
+      }
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const QuestionsDocument = gql`
-    query Questions {
+export const QuizDocument = gql`
+    query Quiz {
   questions {
     edges {
       node {
-        ...QuestionsResponse
+        ...QuizResponse
       }
     }
   }
 }
-    ${QuestionsResponseFragmentDoc}`;
+    ${QuizResponseFragmentDoc}`;
 
-    export function useQuestionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<QuestionsQuery, QuestionsQueryVariables>) {
-      return ApolloReactHooks.useQuery<QuestionsQuery, QuestionsQueryVariables>(QuestionsDocument, baseOptions);
-    }
-      export function useQuestionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<QuestionsQuery, QuestionsQueryVariables>) {
-        return ApolloReactHooks.useLazyQuery<QuestionsQuery, QuestionsQueryVariables>(QuestionsDocument, baseOptions);
+/**
+ * __useQuizQuery__
+ *
+ * To run a query within a React component, call `useQuizQuery` and pass it any options that fit your needs.
+ * When your component renders, `useQuizQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useQuizQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useQuizQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<QuizQuery, QuizQueryVariables>) {
+        return ApolloReactHooks.useQuery<QuizQuery, QuizQueryVariables>(QuizDocument, baseOptions);
       }
-      
-export type QuestionsQueryHookResult = ReturnType<typeof useQuestionsQuery>;
-export type QuestionsQueryResult = ApolloReactCommon.QueryResult<QuestionsQuery, QuestionsQueryVariables>;
+export function useQuizLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<QuizQuery, QuizQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<QuizQuery, QuizQueryVariables>(QuizDocument, baseOptions);
+        }
+export type QuizQueryHookResult = ReturnType<typeof useQuizQuery>;
+export type QuizLazyQueryHookResult = ReturnType<typeof useQuizLazyQuery>;
+export type QuizQueryResult = ApolloReactCommon.QueryResult<QuizQuery, QuizQueryVariables>;
 export const TokenAuthDocument = gql`
     mutation TokenAuth($email: String!, $password: String!) {
   tokenAuth(email: $email, password: $password) {
@@ -387,9 +538,27 @@ export const TokenAuthDocument = gql`
     ${TokenAuthResponseFragmentDoc}`;
 export type TokenAuthMutationFn = ApolloReactCommon.MutationFunction<TokenAuthMutation, TokenAuthMutationVariables>;
 
-    export function useTokenAuthMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TokenAuthMutation, TokenAuthMutationVariables>) {
-      return ApolloReactHooks.useMutation<TokenAuthMutation, TokenAuthMutationVariables>(TokenAuthDocument, baseOptions);
-    }
+/**
+ * __useTokenAuthMutation__
+ *
+ * To run a mutation, you first call `useTokenAuthMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTokenAuthMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tokenAuthMutation, { data, loading, error }] = useTokenAuthMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useTokenAuthMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TokenAuthMutation, TokenAuthMutationVariables>) {
+        return ApolloReactHooks.useMutation<TokenAuthMutation, TokenAuthMutationVariables>(TokenAuthDocument, baseOptions);
+      }
 export type TokenAuthMutationHookResult = ReturnType<typeof useTokenAuthMutation>;
 export type TokenAuthMutationResult = ApolloReactCommon.MutationResult<TokenAuthMutation>;
 export type TokenAuthMutationOptions = ApolloReactCommon.BaseMutationOptions<TokenAuthMutation, TokenAuthMutationVariables>;
@@ -405,12 +574,27 @@ export const UsersDocument = gql`
 }
     ${UsersResponseFragmentDoc}`;
 
-    export function useUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
-      return ApolloReactHooks.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
-    }
-      export function useUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
-        return ApolloReactHooks.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
+/**
+ * __useUsersQuery__
+ *
+ * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+        return ApolloReactHooks.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
       }
-      
+export function useUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, baseOptions);
+        }
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
+export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = ApolloReactCommon.QueryResult<UsersQuery, UsersQueryVariables>;

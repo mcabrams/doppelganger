@@ -72,6 +72,12 @@ npm run test
 docker-compose -f docker-compose.yml -f docker-compose.test.yml run cypress cypress run
 ```
 
+or
+
+```sh
+./e2e/test.sh
+```
+
 ## Deployment
 ```sh
 #TODO
