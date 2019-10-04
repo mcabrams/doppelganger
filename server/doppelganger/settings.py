@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3rd party apps
     'corsheaders',
+    'django_extensions',
     'graphene_django',
 ]
 

@@ -59,6 +59,7 @@ services:
       - server-test
     environment:
       - CYPRESS_baseUrl=http://client-test:8080
+      - CYPRESS_SERVER_GRAPHQL_URL=http://server-test:8001/graphql
     working_dir: /e2e
     volumes:
       - ./e2e:/e2e

@@ -16,6 +16,7 @@ class Query(
 
 
 class Mutation(
+    question.schema.Mutation,
     user.schema.Mutation,
     graphene.ObjectType,
 ):

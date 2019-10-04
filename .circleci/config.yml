@@ -14,7 +14,7 @@ jobs:
 
       - run:
           name: server tests
-          command: docker-compose -f docker-compose.yml -f docker-compose.test.yml run server python manage.py test
+          command: docker-compose -f docker-compose.yml -f docker-compose.test.yml run server ./wait-for.sh database:5432 -- python manage.py test
 
       - run:
           name: client linting
