@@ -1,7 +1,6 @@
 describe('quiz', () => {
   it('cycles to next question after answering', () => {
     cy.login();
-    cy.reload();
     cy.get('[data-testid=quiz-nav-link]')
       .click();
 
