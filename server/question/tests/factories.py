@@ -36,5 +36,6 @@ class AnsweredQuestionFactory(factory.DjangoModelFactory):
         model = AnsweredQuestion
 
     question = factory.SubFactory(QuestionFactory)
-    answer = factory.SubFactory(AnswerFactory)
+    answer = factory.SubFactory(AnswerFactory,
+                                question=factory.SelfAttribute('..question'))
     user_profile = factory.SubFactory(UserProfileFactory)

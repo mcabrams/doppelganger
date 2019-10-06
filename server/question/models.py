@@ -17,7 +17,19 @@ class Answer(TimeStampedModel):
     text = models.CharField(max_length=1024)
 
 
+class AnsweredQuestionQuerySet(models.QuerySet):
+    def answers(self):
+        return Answer.objects.filter(
+            id__in=self.values_list('answer__id', flat=True))
+
+    def questions(self):
+        return Question.objects.filter(
+            id__in=self.values_list('question__id', flat=True))
+
+
 class AnsweredQuestion(TimeStampedModel):
+    objects = AnsweredQuestionQuerySet.as_manager()
+
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.ForeignKey(
         Answer,
