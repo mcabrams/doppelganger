@@ -1,6 +1,7 @@
 import { env } from '@src/lib/env';
 
 export const ROUTES = {
+  findDoppelganger: '/find-doppelganger',
   home: '/',
   login: '/login',
   signup: '/signup',

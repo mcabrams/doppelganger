@@ -1,13 +1,15 @@
-describe('quiz', () => {
+describe('find doppelganger', () => {
   it('finds doppelganger', () => {
     cy.get('[data-testid=find-doppelganger-nav-link]')
       .click();
 
     cy.url()
-      .should('eq', Cypress.config().baseUrl + '/login');
+      .should('eq', Cypress.config().baseUrl + '/signup');
 
     cy.login('userWithDoppelganger');
 
+    cy.get('[data-testid=find-doppelganger-nav-link]')
+      .click();
     cy.url()
       .should('eq', Cypress.config().baseUrl + '/find-doppelganger');
 
