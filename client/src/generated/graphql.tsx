@@ -43,6 +43,17 @@ export type CreateUser = {
   user?: Maybe<UserType>,
 };
 
+export type DoppelgangerInfoType = {
+   __typename?: 'DoppelgangerInfoType',
+  score?: Maybe<Scalars['Float']>,
+};
+
+export type DoppelgangerType = {
+   __typename?: 'DoppelgangerType',
+  userProfile?: Maybe<UserProfileType>,
+  doppelgangerInfo?: Maybe<DoppelgangerInfoType>,
+};
+
 
 /** The real action happens in our custom GraphQLView  */
 export type Logout = {
@@ -121,6 +132,7 @@ export type Query = {
   users?: Maybe<UserPublicConnection>,
   protectedUsers?: Maybe<UserConnection>,
   questions?: Maybe<QuestionConnection>,
+  computeDoppelganger?: Maybe<DoppelgangerType>,
 };
 
 
@@ -145,6 +157,11 @@ export type QueryQuestionsArgs = {
   after?: Maybe<Scalars['String']>,
   first?: Maybe<Scalars['Int']>,
   last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryComputeDoppelgangerArgs = {
+  userProfileId: Scalars['Int']
 };
 
 export type QuestionConnection = {
@@ -194,6 +211,12 @@ export type UserEdge = {
   node?: Maybe<UserType>,
   /** A cursor for use in pagination */
   cursor: Scalars['String'],
+};
+
+export type UserProfileType = {
+   __typename?: 'UserProfileType',
+  id: Scalars['ID'],
+  user: UserPublicType,
 };
 
 export type UserPublicConnection = {

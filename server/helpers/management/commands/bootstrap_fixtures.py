@@ -96,3 +96,8 @@ class Command(BaseCommand):
             question=Question.objects.get(text=SKRILLEX_OR_ZOMBOY_QUESTION),
             answer=Answer.objects.get(text='Zomboy'),
         )
+
+        UserProfileFactory(
+            user__email='noAnsweredQuestionsProfile@example.com',
+            user__password='foobar1234',
+        )

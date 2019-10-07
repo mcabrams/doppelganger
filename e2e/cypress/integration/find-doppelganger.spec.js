@@ -6,7 +6,7 @@ describe('quiz', () => {
     cy.url()
       .should('eq', Cypress.config().baseUrl + '/login');
 
-    cy.login();
+    cy.login('userWithDoppelganger');
 
     cy.url()
       .should('eq', Cypress.config().baseUrl + '/find-doppelganger');
