@@ -1,4 +1,6 @@
 import graphene
+from graphql_jwt.decorators import login_required
+from graphql_jwt.exceptions import PermissionDenied
 
 from user_profile.models import UserProfile
 from user_profile.schema import UserProfileType
@@ -24,11 +26,21 @@ class DoppelgangerType(graphene.ObjectType):
 class Query(graphene.ObjectType):
     compute_doppelganger = graphene.Field(
         DoppelgangerType,
-        user_profile_id=graphene.Int(required=True),
+        user_profile_id=graphene.Int(required=False),
     )
 
-    def resolve_compute_doppelganger(self, info, user_profile_id, **kwargs):
-        user_profile = UserProfile.objects.get(pk=user_profile_id)
+    @login_required
+    def resolve_compute_doppelganger(
+            self, info, user_profile_id=None, **kwargs):
+        if user_profile_id:
+            user_profile = UserProfile.objects.get(pk=user_profile_id)
+        else:
+            user_profile = UserProfile.objects.get(user=info.context.user)
+
+        if (not info.context.user.is_superuser
+                and not info.context.user == user_profile.user):
+            raise PermissionDenied()
+
         doppelganger_and_score = get_doppelganger_and_score(user_profile)
 
         if not doppelganger_and_score:

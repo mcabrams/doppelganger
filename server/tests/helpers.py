@@ -25,3 +25,6 @@ def fake_question(_):
     """
     question = fake.paragraph(nb_sentences=2).rstrip('.')
     return f'{question}?'
+
+
+no_permission_error = 'You do not have permission to perform this action'
