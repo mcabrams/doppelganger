@@ -2,6 +2,7 @@ import { Layout } from 'antd';
 import React from 'react';
 import { Router } from '@reach/router';
 
+import { FindDoppelganger } from '@src/components/FindDoppelganger';
 import { Home } from '@src/components/Home';
 import { Login } from '@src/components/Login';
 import { Nav } from '@src/components/Nav';
@@ -22,6 +23,7 @@ export const App: React.FC = () => (
         <Signup path={ROUTES.signup} />
         <UserList path={ROUTES['user-list']} />
         <Quiz path={ROUTES.quiz} />
+        <FindDoppelganger path={ROUTES.findDoppelganger} />
       </Router>
       <img src={ROUTES.csrftoken} alt="" />
     </Layout.Content>

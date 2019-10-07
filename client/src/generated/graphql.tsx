@@ -43,6 +43,17 @@ export type CreateUser = {
   user?: Maybe<UserType>,
 };
 
+export type DoppelgangerInfoType = {
+   __typename?: 'DoppelgangerInfoType',
+  score?: Maybe<Scalars['Float']>,
+};
+
+export type DoppelgangerType = {
+   __typename?: 'DoppelgangerType',
+  userProfile?: Maybe<UserProfileType>,
+  doppelgangerInfo?: Maybe<DoppelgangerInfoType>,
+};
+
 
 /** The real action happens in our custom GraphQLView  */
 export type Logout = {
@@ -121,6 +132,7 @@ export type Query = {
   users?: Maybe<UserPublicConnection>,
   protectedUsers?: Maybe<UserConnection>,
   questions?: Maybe<QuestionConnection>,
+  computeDoppelganger?: Maybe<DoppelgangerType>,
 };
 
 
@@ -145,6 +157,11 @@ export type QueryQuestionsArgs = {
   after?: Maybe<Scalars['String']>,
   first?: Maybe<Scalars['Int']>,
   last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryComputeDoppelgangerArgs = {
+  userProfileId?: Maybe<Scalars['Int']>
 };
 
 export type QuestionConnection = {
@@ -196,6 +213,12 @@ export type UserEdge = {
   cursor: Scalars['String'],
 };
 
+export type UserProfileType = {
+   __typename?: 'UserProfileType',
+  id: Scalars['ID'],
+  user: UserPublicType,
+};
+
 export type UserPublicConnection = {
    __typename?: 'UserPublicConnection',
   /** Pagination data for this connection. */
@@ -235,6 +258,33 @@ export type Verify = {
    __typename?: 'Verify',
   payload?: Maybe<Scalars['GenericScalar']>,
 };
+
+export type ComputeDoppelgangerQueryVariables = {
+  userProfileId?: Maybe<Scalars['Int']>
+};
+
+
+export type ComputeDoppelgangerQuery = (
+  { __typename?: 'Query' }
+  & { computeDoppelganger: Maybe<(
+    { __typename?: 'DoppelgangerType' }
+    & ComputeDoppelgangerResponseFragment
+  )> }
+);
+
+export type ComputeDoppelgangerResponseFragment = (
+  { __typename?: 'DoppelgangerType' }
+  & { userProfile: Maybe<(
+    { __typename?: 'UserProfileType' }
+    & { user: (
+      { __typename?: 'UserPublicType' }
+      & Pick<UserPublicType, 'username'>
+    ) }
+  )>, doppelgangerInfo: Maybe<(
+    { __typename?: 'DoppelgangerInfoType' }
+    & Pick<DoppelgangerInfoType, 'score'>
+  )> }
+);
 
 export type CreateAnsweredQuestionMutationVariables = {
   questionId: Scalars['Int'],
@@ -359,6 +409,18 @@ export type UsersResponseFragment = (
   & Pick<UserPublicType, 'username'>
 );
 
+export const ComputeDoppelgangerResponseFragmentDoc = gql`
+    fragment ComputeDoppelgangerResponse on DoppelgangerType {
+  userProfile {
+    user {
+      username
+    }
+  }
+  doppelgangerInfo {
+    score
+  }
+}
+    `;
 export const CreateAnsweredQuestionResponseFragmentDoc = gql`
     fragment CreateAnsweredQuestionResponse on AnsweredQuestionType {
   id
@@ -393,6 +455,39 @@ export const UsersResponseFragmentDoc = gql`
   username
 }
     `;
+export const ComputeDoppelgangerDocument = gql`
+    query ComputeDoppelganger($userProfileId: Int) {
+  computeDoppelganger(userProfileId: $userProfileId) {
+    ...ComputeDoppelgangerResponse
+  }
+}
+    ${ComputeDoppelgangerResponseFragmentDoc}`;
+
+/**
+ * __useComputeDoppelgangerQuery__
+ *
+ * To run a query within a React component, call `useComputeDoppelgangerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useComputeDoppelgangerQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useComputeDoppelgangerQuery({
+ *   variables: {
+ *      userProfileId: // value for 'userProfileId'
+ *   },
+ * });
+ */
+export function useComputeDoppelgangerQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ComputeDoppelgangerQuery, ComputeDoppelgangerQueryVariables>) {
+        return ApolloReactHooks.useQuery<ComputeDoppelgangerQuery, ComputeDoppelgangerQueryVariables>(ComputeDoppelgangerDocument, baseOptions);
+      }
+export function useComputeDoppelgangerLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ComputeDoppelgangerQuery, ComputeDoppelgangerQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ComputeDoppelgangerQuery, ComputeDoppelgangerQueryVariables>(ComputeDoppelgangerDocument, baseOptions);
+        }
+export type ComputeDoppelgangerQueryHookResult = ReturnType<typeof useComputeDoppelgangerQuery>;
+export type ComputeDoppelgangerLazyQueryHookResult = ReturnType<typeof useComputeDoppelgangerLazyQuery>;
+export type ComputeDoppelgangerQueryResult = ApolloReactCommon.QueryResult<ComputeDoppelgangerQuery, ComputeDoppelgangerQueryVariables>;
 export const CreateAnsweredQuestionDocument = gql`
     mutation CreateAnsweredQuestion($questionId: Int!, $answerId: Int!) {
   createAnsweredQuestion(questionId: $questionId, answerId: $answerId) {
