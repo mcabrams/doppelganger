@@ -27,5 +27,10 @@ class GetDoppelgangerAndScoreTests(TestCase):
             question=question,
             answer=non_shared_answer,
         )
+
+        # Create a profile with no answered questions that won't be a
+        # doppelganger
+        UserProfileFactory()
+
         self.assertEqual(get_doppelganger_and_score(user_profile),
                          (doppelganger, 1))

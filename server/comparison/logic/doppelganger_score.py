@@ -1,7 +1,6 @@
 def doppelganger_score(source_user_profile, target_user_profile):
     shared_questions_count = _shared_questions_count(source_user_profile,
                                                      target_user_profile)
-
     if shared_questions_count == 0:
         return None
 
