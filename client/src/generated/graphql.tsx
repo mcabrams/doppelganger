@@ -161,7 +161,7 @@ export type QueryQuestionsArgs = {
 
 
 export type QueryComputeDoppelgangerArgs = {
-  userProfileId: Scalars['Int']
+  userProfileId?: Maybe<Scalars['Int']>
 };
 
 export type QuestionConnection = {
