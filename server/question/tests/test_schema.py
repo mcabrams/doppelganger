@@ -1,12 +1,10 @@
 from graphql_relay import to_global_id
 import json
 
-from tests.helpers import (
-    DoppelgangerGraphQLTestCase, DoppelgangerJSONWebTokenTestCase,
-)
+from tests.helpers import DoppelgangerJSONWebTokenTestCase, no_permission_error
 from user_profile.tests.factories import UserProfileFactory
 
-from .factories import AnswerFactory, QuestionFactory
+from .factories import AnswerFactory, AnsweredQuestionFactory, QuestionFactory
 from ..models import AnsweredQuestion
 from ..schema import QuestionType
 
@@ -15,7 +13,7 @@ def result_to_dict(result):
     return json.loads(json.dumps(result))
 
 
-class QuestionsTestCase(DoppelgangerGraphQLTestCase):
+class QuestionsTestCase(DoppelgangerJSONWebTokenTestCase):
     op_name = 'questions'
 
     def test_questions_can_return_nested_answers(self):
@@ -23,7 +21,7 @@ class QuestionsTestCase(DoppelgangerGraphQLTestCase):
         answer1 = AnswerFactory(question=question)
         answer2 = AnswerFactory(question=question)
 
-        response = self.query(
+        result = self.client.execute(
             '''
             query {
                 questions {
@@ -41,12 +39,87 @@ class QuestionsTestCase(DoppelgangerGraphQLTestCase):
                 }
             }
             ''',
-            op_name=self.op_name,
         )
 
-        content = json.loads(response.content)
-        self.assertIsNone(content.get('errors'))
-        self.assertEqual(content['data'][self.op_name]['edges'], [{
+        self.assertIsNone(result.errors)
+        self.assertEqual(result.data[self.op_name]['edges'], [{
+            'node': {
+                'id': to_global_id(QuestionType._meta.name, question.id),
+                'pk': question.id,
+                'text': question.text,
+                'answers': [
+                    {'pk': answer2.id, 'text': answer2.text},
+                    {'pk': answer1.id, 'text': answer1.text},
+                ],
+            }
+        }])
+
+    def test_attempting_to_omit_answers_while_not_logged_in_errors(self):
+        result = self.client.execute(
+            '''
+            query {
+                questions(omitAnsweredQuestions: true) {
+                    edges {
+                        node {
+                            id
+                            pk
+                            text
+                            answers {
+                                pk
+                                text
+                            }
+                        }
+                    }
+                }
+            }
+            ''',
+        )
+
+        self.assertEqual([str(e) for e in result.errors], [no_permission_error])
+
+    def test_omits_answered_questions_when_arg_passed(self):
+        # Non answered question
+        question = QuestionFactory()
+        answer1 = AnswerFactory(question=question)
+        answer2 = AnswerFactory(question=question)
+
+        # answered question
+        question2 = QuestionFactory()
+        answer3 = AnswerFactory(question=question2)
+        AnswerFactory(question=question2)
+
+        # authenticate user with answered question
+        user_profile = UserProfileFactory()
+        AnsweredQuestionFactory(
+            user_profile=user_profile,
+            question=question2,
+            answer=answer3,
+        )
+        user = user_profile.user
+        self.client.authenticate(user)
+
+        result = self.client.execute(
+            '''
+            query {
+                questions(omitAnsweredQuestions: true) {
+                    edges {
+                        node {
+                            id
+                            pk
+                            text
+                            answers {
+                                pk
+                                text
+                            }
+                        }
+                    }
+                }
+            }
+            ''',
+        )
+
+        self.assertIsNone(result.errors)
+        self.assertEqual(result.data[self.op_name]['edges'], [{
             'node': {
                 'id': to_global_id(QuestionType._meta.name, question.id),
                 'pk': question.id,

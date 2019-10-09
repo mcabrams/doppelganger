@@ -176,6 +176,16 @@
                 {
                   "defaultValue": null,
                   "description": null,
+                  "name": "omitAnsweredQuestions",
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "Boolean",
+                    "ofType": null
+                  }
+                },
+                {
+                  "defaultValue": null,
+                  "description": null,
                   "name": "before",
                   "type": {
                     "kind": "SCALAR",

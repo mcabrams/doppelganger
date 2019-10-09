@@ -2,8 +2,9 @@ import graphene
 from graphene_django.types import DjangoObjectType
 from graphene import relay
 from graphql_jwt.decorators import login_required
+from graphql_jwt.exceptions import PermissionDenied
 
-from . import models
+from .models import Answer, AnsweredQuestion, Question
 
 
 class PKMixin:
@@ -12,7 +13,7 @@ class PKMixin:
 
 class QuestionType(DjangoObjectType, PKMixin):
     class Meta:
-        model = models.Question
+        model = Question
         fields = ('pk', 'id', 'text', 'answers')
         interfaces = (relay.Node,)
 
@@ -24,20 +25,33 @@ class QuestionConnection(relay.Connection):
 
 class AnswerType(DjangoObjectType, PKMixin):
     class Meta:
-        model = models.Answer
+        model = Answer
         fields = ('pk', 'id', 'text',)
 
 
 class Query(graphene.ObjectType):
-    questions = relay.ConnectionField(QuestionConnection)
+    questions = relay.ConnectionField(
+        QuestionConnection,
+        omit_answered_questions=graphene.Boolean(required=False),
+    )
 
-    def resolve_questions(self, info, **kwargs):
-        return models.Question.objects.all()
+    def resolve_questions(self, info, omit_answered_questions=False, **kwargs):
+        if not omit_answered_questions:
+            return Question.objects.all()
+
+        user = info.context.user
+
+        if not user.is_authenticated:
+            raise PermissionDenied()
+
+        answered_questions = user.profile.questions()
+
+        return Question.objects.all().difference(answered_questions)
 
 
 class AnsweredQuestionType(DjangoObjectType):
     class Meta:
-        model = models.AnsweredQuestion
+        model = AnsweredQuestion
         fields = ('id', 'question', 'answer', 'user')
 
 
@@ -50,7 +64,7 @@ class CreateAnsweredQuestion(graphene.Mutation):
 
     @login_required
     def mutate(self, info, question_id, answer_id):
-        answered_question = models.AnsweredQuestion.objects.create(
+        answered_question = AnsweredQuestion.objects.create(
             user_profile=info.context.user.profile,
             question_id=question_id,
             answer_id=answer_id,

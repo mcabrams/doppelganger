@@ -153,6 +153,7 @@ export type QueryProtectedUsersArgs = {
 
 
 export type QueryQuestionsArgs = {
+  omitAnsweredQuestions?: Maybe<Scalars['Boolean']>,
   before?: Maybe<Scalars['String']>,
   after?: Maybe<Scalars['String']>,
   first?: Maybe<Scalars['Int']>,
