@@ -591,7 +591,7 @@ export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutati
 export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const QuizDocument = gql`
     query Quiz {
-  questions {
+  questions(omitAnsweredQuestions: true) {
     edges {
       node {
         ...QuizResponse

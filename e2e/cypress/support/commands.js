@@ -11,6 +11,10 @@ const USERNAME_EMAIL_PASSWORD_MAP = {
     email: 'doppelganger@example.com',
     password: 'foobar1234',
   },
+  noAnsweredQuestions: {
+    email: 'noAnsweredQuestions@example.com',
+    password: 'foobar1234',
+  },
 };
 
 Cypress.Commands.add('login', (user) => {

@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 export const QUIZ_QUERY = gql`
   query Quiz {
-    questions {
+    questions(omitAnsweredQuestions: true) {
       edges {
         node {
           ...QuizResponse

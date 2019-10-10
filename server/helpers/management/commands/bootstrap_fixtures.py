@@ -7,21 +7,21 @@ from question.tests.factories import (
 )
 from user_profile.tests.factories import UserProfileFactory
 
-WHO_WOULD_WIN_QUESTION = 'Who would win - Darth Vader or Darth Maul?'
-SKRILLEX_OR_ZOMBOY_QUESTION = 'Skrillex or Zomboy?'
-WHO_WAS_BEST_SEINFELD_CHARACTER = 'Who was the best Seinfeld character?'
+BEST_VILLAIN = 'Who is the best villain?'
+BEST_DJ = 'Who is the best DJ?'
+BEST_SEINFELD_CHARACTER = 'Who was the best Seinfeld character?'
 
 question_answers = [
     [
-        WHO_WOULD_WIN_QUESTION,
-        ['Darth Vader', 'Darth Maul'],
+        BEST_VILLAIN,
+        ['Darth Vader', 'Darth Maul', 'Jar Jar Binks'],
     ],
     [
-        SKRILLEX_OR_ZOMBOY_QUESTION,
-        ['Skrillex', 'Zomboy'],
+        BEST_DJ,
+        ['A-Trak', 'Diplo', 'Paris Hilton'],
     ],
     [
-        WHO_WAS_BEST_SEINFELD_CHARACTER,
+        BEST_SEINFELD_CHARACTER,
         ['Jerry', 'Elaine', 'Kramer', 'George'],
     ],
 ]
@@ -58,13 +58,18 @@ class Command(BaseCommand):
         )
         AnsweredQuestionFactory(
             user_profile=profile_with_doppelganger,
-            question=Question.objects.get(text=WHO_WOULD_WIN_QUESTION),
+            question=Question.objects.get(text=BEST_VILLAIN),
             answer=Answer.objects.get(text='Darth Vader'),
         )
         AnsweredQuestionFactory(
             user_profile=profile_with_doppelganger,
-            question=Question.objects.get(text=SKRILLEX_OR_ZOMBOY_QUESTION),
-            answer=Answer.objects.get(text='Skrillex'),
+            question=Question.objects.get(text=BEST_DJ),
+            answer=Answer.objects.get(text='A-Trak'),
+        )
+        AnsweredQuestionFactory(
+            user_profile=profile_with_doppelganger,
+            question=Question.objects.get(text=BEST_SEINFELD_CHARACTER),
+            answer=Answer.objects.get(text='Jerry'),
         )
 
         doppelganger_profile = UserProfileFactory(
@@ -73,13 +78,18 @@ class Command(BaseCommand):
         )
         AnsweredQuestionFactory(
             user_profile=doppelganger_profile,
-            question=Question.objects.get(text=WHO_WOULD_WIN_QUESTION),
+            question=Question.objects.get(text=BEST_VILLAIN),
             answer=Answer.objects.get(text='Darth Vader'),
         )
         AnsweredQuestionFactory(
             user_profile=doppelganger_profile,
-            question=Question.objects.get(text=SKRILLEX_OR_ZOMBOY_QUESTION),
-            answer=Answer.objects.get(text='Zomboy'),
+            question=Question.objects.get(text=BEST_DJ),
+            answer=Answer.objects.get(text='Diplo'),
+        )
+        AnsweredQuestionFactory(
+            user_profile=doppelganger_profile,
+            question=Question.objects.get(text=BEST_SEINFELD_CHARACTER),
+            answer=Answer.objects.get(text='Jerry'),
         )
 
         not_doppelganger_profile = UserProfileFactory(
@@ -88,13 +98,18 @@ class Command(BaseCommand):
         )
         AnsweredQuestionFactory(
             user_profile=not_doppelganger_profile,
-            question=Question.objects.get(text=WHO_WOULD_WIN_QUESTION),
+            question=Question.objects.get(text=BEST_VILLAIN),
             answer=Answer.objects.get(text='Darth Maul'),
         )
         AnsweredQuestionFactory(
             user_profile=not_doppelganger_profile,
-            question=Question.objects.get(text=SKRILLEX_OR_ZOMBOY_QUESTION),
-            answer=Answer.objects.get(text='Zomboy'),
+            question=Question.objects.get(text=BEST_DJ),
+            answer=Answer.objects.get(text='Diplo'),
+        )
+        AnsweredQuestionFactory(
+            user_profile=not_doppelganger_profile,
+            question=Question.objects.get(text=BEST_SEINFELD_CHARACTER),
+            answer=Answer.objects.get(text='George'),
         )
 
         UserProfileFactory(
