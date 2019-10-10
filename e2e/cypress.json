@@ -1,4 +1,5 @@
 {
+  "fixturesFolder": false,
   "pluginsFile": false,
   "supportFile": "cypress/support/index.js",
   "videoUploadOnPasses": false
