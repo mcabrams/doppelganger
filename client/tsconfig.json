@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "ESNext",
-    "lib": ["dom","es6"],
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "esModuleInterop": true,
     "jsx": "react",
-    "sourceMap": true,
+    "lib": ["dom","es6"],
+    "module": "ESNext",
+    "moduleResolution": "node",
     "outDir": "build",
     "rootDir": "src",
+    "sourceMap": true,
     "strict": true,
-    "moduleResolution": "node",
-    "baseUrl": "./",
+    "target": "es5",
     "paths": {
       "@src/*": ["./src/*"]
-    },
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    }
   }
 }
