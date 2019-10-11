@@ -46,7 +46,9 @@ class Query(graphene.ObjectType):
 
         answered_questions = user.profile.questions()
 
-        return Question.objects.all().difference(answered_questions)
+        return Question.objects.all().difference(answered_questions).order_by(
+            'pk',
+        )
 
 
 class AnsweredQuestionType(DjangoObjectType):

@@ -19,6 +19,6 @@ describe('find doppelganger', () => {
 
     cy.get('[data-testid=doppelganger-score]')
       .should('be.visible')
-      .should('have.text', '50%');
+      .should('have.text', '66.67%');
   });
 });

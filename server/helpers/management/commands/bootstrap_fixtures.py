@@ -113,6 +113,6 @@ class Command(BaseCommand):
         )
 
         UserProfileFactory(
-            user__email='noAnsweredQuestionsProfile@example.com',
+            user__email='noAnsweredQuestions@example.com',
             user__password='foobar1234',
         )

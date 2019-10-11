@@ -29,7 +29,7 @@ export const FindDoppelganger: React.FC<FindDoppelgangerProps> = ({ navigate }) 
               {data.computeDoppelganger.userProfile.user.username}
             </Paragraph>
             <Paragraph data-testid="doppelganger-score">
-              {data.computeDoppelganger.doppelgangerInfo.score * 100}
+              {(data.computeDoppelganger.doppelgangerInfo.score * 100).toFixed(2)}
               %
             </Paragraph>
           </>

@@ -1,7 +1,8 @@
 #!/bin/bash
 # Expected to be run outside of docker.  Tests outside docker.  Can be useful
 # for debugging situations where tests fail in docker cypress setup, and also
-# allows full interaction in client side chrome/cypress
+# allows full interaction in client side chrome/cypress - Probably need to
+# disable CSRF middleware, as login approach fails there, currently.
 
 if ! [[ -x "$(command -v cypress)" ]]; then
   echo 'Error: Cypress is not installed. Please install it first before running.' >&2
