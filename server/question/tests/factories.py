@@ -39,3 +39,26 @@ class AnsweredQuestionFactory(factory.DjangoModelFactory):
     answer = factory.SubFactory(AnswerFactory,
                                 question=factory.SelfAttribute('..question'))
     user_profile = factory.SubFactory(UserProfileFactory)
+
+
+def shared_answered_questions_factory(user_profile1=None, user_profile2=None,
+                                      different_answers=False):
+    """ Creates a shared answered question with two user profiles - if different
+    answers is False, the answers will be the same, if it's True they will be
+    different. """
+
+    question = QuestionFactory(with_answers=True)
+    user_profile1_answered_question = AnsweredQuestionFactory(
+        question=question,
+        answer=question.answers.first(),
+        **({'user_profile': user_profile1} if user_profile1 else {}),
+    )
+
+    user2s_answer = (question.answers.last()
+                     if different_answers else question.answers.first())
+    user_profile2_answered_question = AnsweredQuestionFactory(
+        question=question,
+        answer=user2s_answer,
+        **({'user_profile': user_profile2} if user_profile2 else {}),
+    )
+    return user_profile1_answered_question, user_profile2_answered_question

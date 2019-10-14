@@ -18,7 +18,9 @@ def _shared_questions_count(source_user_profile, target_user_profile):
 
 
 def _shared_answers_count(source_user_profile, target_user_profile):
-    sources_answers = source_user_profile.answers()
-    targets_answers = target_user_profile.answers()
-    shared_answers = sources_answers.intersection(targets_answers)
+    source_answered_qs = source_user_profile.answered_questions.all()
+    target_answered_qs = target_user_profile.answered_questions.all()
+    shared_answers = source_answered_qs.shared_answers_with(
+        target_answered_qs,
+    )
     return shared_answers.count()

@@ -40,9 +40,7 @@ class QuestionsTestCase(DoppelgangerJSONWebTokenTestCase):
             }
             ''',
         )
-
-        self.assertIsNone(result.errors)
-        self.assertEqual(result.data[self.op_name]['edges'], [{
+        expected = [{
             'node': {
                 'id': to_global_id(QuestionType._meta.name, question.id),
                 'pk': question.id,
@@ -52,7 +50,10 @@ class QuestionsTestCase(DoppelgangerJSONWebTokenTestCase):
                     {'pk': answer1.id, 'text': answer1.text},
                 ],
             }
-        }])
+        }]
+
+        self.assertIsNone(result.errors)
+        self.assertEqual(result.data[self.op_name]['edges'], expected)
 
     def test_attempting_to_omit_answers_while_not_logged_in_errors(self):
         result = self.client.execute(
