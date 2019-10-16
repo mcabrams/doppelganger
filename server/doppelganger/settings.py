@@ -59,7 +59,8 @@ MIDDLEWARE = [
     # 3rd party cors middleware
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    *([] if env('DJANGO_DISABLE_CSRF', default=False) else ['django.middleware.csrf.CsrfViewMiddleware']),
+    *([] if env('DJANGO_DISABLE_CSRF', default=False)
+      else ['django.middleware.csrf.CsrfViewMiddleware']),
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

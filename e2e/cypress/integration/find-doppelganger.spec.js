@@ -20,5 +20,17 @@ describe('find doppelganger', () => {
     cy.get('[data-testid=doppelganger-score]')
       .should('be.visible')
       .should('have.text', '66.67%');
+
+    cy.get('[data-testid=source-answers]')
+      .children()
+      .should($answerComparions => {
+        expect($answerComparions).to.have.length(2);
+      });
+
+    cy.get('[data-testid=target-answers]')
+      .children()
+      .should($answerComparions => {
+        expect($answerComparions).to.have.length(2);
+      });
   });
 });

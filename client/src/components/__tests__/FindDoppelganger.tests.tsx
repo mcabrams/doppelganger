@@ -20,6 +20,7 @@ const result: Pick<ComputeDoppelgangerQueryResult, 'data'> = {
       },
       userProfile: {
         __typename: 'UserProfileType',
+        id: '90j0dfsaj001j0231',
         user: {
           __typename: 'UserPublicType',
           username: 'foo',

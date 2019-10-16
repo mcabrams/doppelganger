@@ -2,10 +2,11 @@ import {
   Col, Row, Typography, Spin,
 } from 'antd';
 import React from 'react';
+
 import { RouteComponentProps } from '@reach/router';
+import { UserComparison } from '@src/components/UserComparison';
 import { ROUTES } from '@src/constants/routes';
 import { useComputeDoppelgangerQuery } from '@src/generated/graphql';
-
 import { useRedirectIfLoggedOut } from '@src/hooks/useRedirectIfLoggedOut';
 
 type FindDoppelgangerProps = RouteComponentProps;
@@ -18,7 +19,7 @@ export const FindDoppelganger: React.FC<FindDoppelgangerProps> = ({ navigate }) 
 
   return (
     <Row gutter={16}>
-      <Col span={6}>
+      <Col span={24}>
         <Title data-testid="find-doppelganger-heading">
           Find Your Doppelganger
         </Title>
@@ -32,6 +33,11 @@ export const FindDoppelganger: React.FC<FindDoppelgangerProps> = ({ navigate }) 
               {(data.computeDoppelganger.doppelgangerInfo.score * 100).toFixed(2)}
               %
             </Paragraph>
+            <UserComparison
+              targetUserProfileId={parseInt(
+                data.computeDoppelganger.userProfile.id, 10,
+              )}
+            />
           </>
         )}
         {loading && <Spin />}

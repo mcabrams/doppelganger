@@ -133,6 +133,7 @@ export type Query = {
   protectedUsers?: Maybe<UserConnection>,
   questions?: Maybe<QuestionConnection>,
   computeDoppelganger?: Maybe<DoppelgangerType>,
+  userComparison?: Maybe<UserComparisonType>,
 };
 
 
@@ -165,6 +166,12 @@ export type QueryComputeDoppelgangerArgs = {
   userProfileId?: Maybe<Scalars['Int']>
 };
 
+
+export type QueryUserComparisonArgs = {
+  targetUserProfileId: Scalars['Int'],
+  sourceUserProfileId?: Maybe<Scalars['Int']>
+};
+
 export type QuestionConnection = {
    __typename?: 'QuestionConnection',
   /** Pagination data for this connection. */
@@ -195,6 +202,17 @@ export type Refresh = {
    __typename?: 'Refresh',
   token?: Maybe<Scalars['String']>,
   payload?: Maybe<Scalars['GenericScalar']>,
+};
+
+export type UserComparisonType = {
+   __typename?: 'UserComparisonType',
+  sourceUser?: Maybe<UserComparisonUserType>,
+  targetUser?: Maybe<UserComparisonUserType>,
+};
+
+export type UserComparisonUserType = {
+   __typename?: 'UserComparisonUserType',
+  sharedAnsweredQuestions?: Maybe<Array<Maybe<AnsweredQuestionType>>>,
 };
 
 export type UserConnection = {
@@ -277,6 +295,7 @@ export type ComputeDoppelgangerResponseFragment = (
   { __typename?: 'DoppelgangerType' }
   & { userProfile: Maybe<(
     { __typename?: 'UserProfileType' }
+    & Pick<UserProfileType, 'id'>
     & { user: (
       { __typename?: 'UserPublicType' }
       & Pick<UserPublicType, 'username'>
@@ -410,9 +429,43 @@ export type UsersResponseFragment = (
   & Pick<UserPublicType, 'username'>
 );
 
+export type UserComparisonQueryVariables = {
+  targetUserProfileId: Scalars['Int']
+};
+
+
+export type UserComparisonQuery = (
+  { __typename?: 'Query' }
+  & { userComparison: Maybe<(
+    { __typename?: 'UserComparisonType' }
+    & { sourceUser: Maybe<(
+      { __typename?: 'UserComparisonUserType' }
+      & UserComparisonResponseFragment
+    )>, targetUser: Maybe<(
+      { __typename?: 'UserComparisonUserType' }
+      & UserComparisonResponseFragment
+    )> }
+  )> }
+);
+
+export type UserComparisonResponseFragment = (
+  { __typename?: 'UserComparisonUserType' }
+  & { sharedAnsweredQuestions: Maybe<Array<Maybe<(
+    { __typename?: 'AnsweredQuestionType' }
+    & { question: (
+      { __typename?: 'QuestionType' }
+      & Pick<QuestionType, 'pk' | 'text'>
+    ), answer: (
+      { __typename?: 'AnswerType' }
+      & Pick<AnswerType, 'id' | 'text'>
+    ) }
+  )>>> }
+);
+
 export const ComputeDoppelgangerResponseFragmentDoc = gql`
     fragment ComputeDoppelgangerResponse on DoppelgangerType {
   userProfile {
+    id
     user {
       username
     }
@@ -454,6 +507,20 @@ export const TokenAuthResponseFragmentDoc = gql`
 export const UsersResponseFragmentDoc = gql`
     fragment UsersResponse on UserPublicType {
   username
+}
+    `;
+export const UserComparisonResponseFragmentDoc = gql`
+    fragment UserComparisonResponse on UserComparisonUserType {
+  sharedAnsweredQuestions {
+    question {
+      pk
+      text
+    }
+    answer {
+      id
+      text
+    }
+  }
 }
     `;
 export const ComputeDoppelgangerDocument = gql`
@@ -694,3 +761,41 @@ export function useUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = ApolloReactCommon.QueryResult<UsersQuery, UsersQueryVariables>;
+export const UserComparisonDocument = gql`
+    query UserComparison($targetUserProfileId: Int!) {
+  userComparison(targetUserProfileId: $targetUserProfileId) {
+    sourceUser {
+      ...UserComparisonResponse
+    }
+    targetUser {
+      ...UserComparisonResponse
+    }
+  }
+}
+    ${UserComparisonResponseFragmentDoc}`;
+
+/**
+ * __useUserComparisonQuery__
+ *
+ * To run a query within a React component, call `useUserComparisonQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserComparisonQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserComparisonQuery({
+ *   variables: {
+ *      targetUserProfileId: // value for 'targetUserProfileId'
+ *   },
+ * });
+ */
+export function useUserComparisonQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserComparisonQuery, UserComparisonQueryVariables>) {
+        return ApolloReactHooks.useQuery<UserComparisonQuery, UserComparisonQueryVariables>(UserComparisonDocument, baseOptions);
+      }
+export function useUserComparisonLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserComparisonQuery, UserComparisonQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UserComparisonQuery, UserComparisonQueryVariables>(UserComparisonDocument, baseOptions);
+        }
+export type UserComparisonQueryHookResult = ReturnType<typeof useUserComparisonQuery>;
+export type UserComparisonLazyQueryHookResult = ReturnType<typeof useUserComparisonLazyQuery>;
+export type UserComparisonQueryResult = ApolloReactCommon.QueryResult<UserComparisonQuery, UserComparisonQueryVariables>;
