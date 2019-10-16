@@ -5,4 +5,4 @@ from . import models
 class UserProfileType(DjangoObjectType):
     class Meta:
         model = models.UserProfile
-        fields = ('id', 'user')
+        fields = ('id', 'pk', 'user')

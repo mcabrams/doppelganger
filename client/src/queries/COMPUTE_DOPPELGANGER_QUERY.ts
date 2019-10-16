@@ -8,6 +8,7 @@ export const COMPUTE_DOPPELGANGER_QUERY = gql`
   }
   fragment ComputeDoppelgangerResponse on DoppelgangerType {
     userProfile {
+      id
       user {
         username
       }
