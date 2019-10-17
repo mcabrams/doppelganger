@@ -8,5 +8,6 @@ export const TOKEN_AUTH_MUTATION = gql`
   }
   fragment TokenAuthResponse on ObtainJSONWebToken {
     token
+    refreshToken
   }
 `;

@@ -71,6 +71,7 @@ export type Mutation = {
   tokenAuth?: Maybe<ObtainJsonWebToken>,
   verifyToken?: Maybe<Verify>,
   refreshToken?: Maybe<Refresh>,
+  revokeToken?: Maybe<Revoke>,
 };
 
 
@@ -99,7 +100,12 @@ export type MutationVerifyTokenArgs = {
 
 
 export type MutationRefreshTokenArgs = {
-  token: Scalars['String']
+  refreshToken: Scalars['String']
+};
+
+
+export type MutationRevokeTokenArgs = {
+  refreshToken: Scalars['String']
 };
 
 /** An object with an ID */
@@ -112,6 +118,7 @@ export type Node = {
 export type ObtainJsonWebToken = {
    __typename?: 'ObtainJSONWebToken',
   token?: Maybe<Scalars['String']>,
+  refreshToken?: Maybe<Scalars['String']>,
 };
 
 /** The Relay compliant `PageInfo` type, containing data necessary to paginate this connection. */
@@ -202,6 +209,12 @@ export type Refresh = {
    __typename?: 'Refresh',
   token?: Maybe<Scalars['String']>,
   payload?: Maybe<Scalars['GenericScalar']>,
+  refreshToken?: Maybe<Scalars['String']>,
+};
+
+export type Revoke = {
+   __typename?: 'Revoke',
+  revoked?: Maybe<Scalars['Int']>,
 };
 
 export type UserComparisonType = {
@@ -404,7 +417,7 @@ export type TokenAuthMutation = (
 
 export type TokenAuthResponseFragment = (
   { __typename?: 'ObtainJSONWebToken' }
-  & Pick<ObtainJsonWebToken, 'token'>
+  & Pick<ObtainJsonWebToken, 'token' | 'refreshToken'>
 );
 
 export type UsersQueryVariables = {};
@@ -502,6 +515,7 @@ export const QuizResponseFragmentDoc = gql`
 export const TokenAuthResponseFragmentDoc = gql`
     fragment TokenAuthResponse on ObtainJSONWebToken {
   token
+  refreshToken
 }
     `;
 export const UsersResponseFragmentDoc = gql`
