@@ -53,7 +53,7 @@
     "style-loader": "1.0.0",
     "ts-import-plugin": "1.6.1",
     "ts-jest": "24.1.0",
-    "ts-loader": "6.2.0",
+    "ts-loader": "6.2.1",
     "typescript": "3.7.0-beta",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.9",
