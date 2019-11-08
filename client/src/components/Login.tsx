@@ -17,14 +17,14 @@ type LoginProps = RouteComponentProps<LoginFormProps>;
 export const Login: React.FC<LoginProps> = ({ navigate }) => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [_, setIsLoggedIn] = useIsLoggedIn();
+  const setIsLoggedIn = useIsLoggedIn()[1];
   useRedirectIfLoggedIn(navigate);
 
-  const [tokenAuth, __] = useTokenAuthMutation({
+  const tokenAuth = useTokenAuthMutation({
     variables: { email, password },
     // TODO: Raise error here if setIsLoggedIn is not defined
     onCompleted: () => setIsLoggedIn && setIsLoggedIn(true),
-  });
+  })[0];
 
   const itemLayout = {
     labelCol: { span: 1 },

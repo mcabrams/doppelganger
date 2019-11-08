@@ -10,7 +10,7 @@ import { useTypedSelector } from '@src/redux/use-typed-selector';
 export const useRedirectIfLoggedIn = (
   navigate?: NavigateFn,
 ) => {
-  const [isLoggedIn, _] = useIsLoggedIn();
+  const isLoggedIn = useIsLoggedIn()[0];
   const dispatch = useDispatch();
   const authRedirectLocation = useTypedSelector(
     state => getAuthRedirectLocation(state.authRedirect),

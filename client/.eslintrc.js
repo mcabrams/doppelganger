@@ -9,7 +9,7 @@ const rules = {
   // 'groups': ['index', 'sibling', 'parent', 'internal', 'external', 'builtin'], // Ensure grouped imports
   // 'newlines-between': 'always', // Ensure newlines between groups
   // }],
-
+  'no-undef': 0, // This is handled by typescript
   'no-underscore-dangle': ['error', { 'allow': ['_env_', '__typename'] }], // allow underscore dangle only for specified
   'arrow-parens': ['error', 'as-needed'], // only require parens on arrow function if needed
   'react/prop-types': 0, // This is handled by typescript

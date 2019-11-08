@@ -21,7 +21,7 @@ export const Signup: React.FC<RouteComponentProps<SignupFormProps>> = (
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [_, setIsLoggedIn] = useIsLoggedIn();
+  const setIsLoggedIn = useIsLoggedIn()[1];
   useRedirectIfLoggedIn(navigate);
 
   const [tokenAuth, { error }] = useTokenAuthMutation({
@@ -39,12 +39,12 @@ export const Signup: React.FC<RouteComponentProps<SignupFormProps>> = (
     await tokenAuth();
   };
 
-  const [createUser, __] = useCreateUserMutation({
+  const createUser = useCreateUserMutation({
     variables: { email, password, username },
     onCompleted: data => {
       requestToken(data);
     },
-  });
+  })[0];
 
   const itemLayout = {
     labelCol: { span: 1 },
