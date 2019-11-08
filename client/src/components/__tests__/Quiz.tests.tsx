@@ -73,16 +73,6 @@ const mocks = [
 ];
 
 describe('Quiz', () => {
-  it('renders without error', () => {
-    render(
-      <Provider store={store}>
-        <MockedProvider mocks={mocks}>
-          <Quiz />
-        </MockedProvider>
-      </Provider>,
-    );
-  });
-
   it('should render question text', async () => {
     const { getByTestId } = render(
       <Provider store={store}>

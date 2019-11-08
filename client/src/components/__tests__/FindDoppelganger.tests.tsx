@@ -40,16 +40,6 @@ const mocks = [
 ];
 
 describe('FindDoppelganger', () => {
-  it('renders without error', () => {
-    render(
-      <Provider store={store}>
-        <MockedProvider mocks={mocks}>
-          <FindDoppelganger />
-        </MockedProvider>
-      </Provider>,
-    );
-  });
-
   it('should render doppelganger once loaded', async () => {
     const { getByTestId } = render(
       <Provider store={store}>
