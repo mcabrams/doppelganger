@@ -7,10 +7,10 @@ import { useLogoutMutation } from '@src/generated/graphql';
 interface LogoutProps {}
 
 export const Logout: React.FC<LogoutProps> = () => {
-  const [_, setIsLoggedIn] = useIsLoggedIn();
-  const [logout, __] = useLogoutMutation({
+  const setIsLoggedIn = useIsLoggedIn()[1];
+  const logout = useLogoutMutation({
     onCompleted: () => setIsLoggedIn && setIsLoggedIn(false),
-  });
+  })[0];
 
   return (
     <Button

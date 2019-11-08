@@ -9,7 +9,7 @@ import { useIsLoggedIn } from '@src/hooks/useIsLoggedIn';
 interface NavProps {}
 
 export const Nav: React.FC<NavProps> = () => {
-  const [isLoggedIn, _] = useIsLoggedIn();
+  const isLoggedIn = useIsLoggedIn()[0];
 
   return (
     <Menu mode="horizontal" style={{ lineHeight: '64px' }} theme="dark">

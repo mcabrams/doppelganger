@@ -9,7 +9,7 @@ export const useRedirectIfLoggedOut = (
   redirectAfterLoginLocation: string,
   navigate?: NavigateFn,
 ) => {
-  const [isLoggedIn, _] = useIsLoggedIn();
+  const isLoggedIn = useIsLoggedIn()[0];
   const dispatch = useDispatch();
 
   if (!isLoggedIn) {
