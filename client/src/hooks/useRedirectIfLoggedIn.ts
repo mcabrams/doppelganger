@@ -20,8 +20,6 @@ export const useRedirectIfLoggedIn = (
     () => {
       // TODO: Raise error here if navigate not defined
       if (isLoggedIn && navigate) {
-        // @ts-ignore navigate type definition is incorrect, navigate returns
-        // a promise
         navigate(authRedirectLocation || '/').then(
           () => dispatch(clearAuthRedirectLocation()),
         );
