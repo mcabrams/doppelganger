@@ -1,6 +1,10 @@
 from faker import Faker
-from graphene_django.utils.testing import GraphQLTestCase
-from graphql_jwt.testcases import JSONWebTokenTestCase
+from graphene_django.utils.testing import (
+    GraphQLTestCase as GrapheneDjangoGraphQLTestCase,
+)
+from graphql_jwt.testcases import (
+    JSONWebTokenTestCase as GraphqlJWTJSONWebTokenTestCase,
+)
 
 from doppelganger.schema import schema
 
@@ -8,12 +12,12 @@ from doppelganger.schema import schema
 fake = Faker()
 
 
-class DoppelgangerGraphQLTestCase(GraphQLTestCase):
+class GraphQLTestCase(GrapheneDjangoGraphQLTestCase):
     GRAPHQL_SCHEMA = schema
     GRAPHQL_URL = '/graphql'
 
 
-class DoppelgangerJSONWebTokenTestCase(JSONWebTokenTestCase):
+class JSONWebTokenTestCase(GraphqlJWTJSONWebTokenTestCase):
     pass
 
 

@@ -3,13 +3,13 @@ import json
 from django.contrib.auth import get_user_model
 
 from tests.helpers import (
-    DoppelgangerGraphQLTestCase, DoppelgangerJSONWebTokenTestCase,
+    GraphQLTestCase, JSONWebTokenTestCase,
 )
 
 from .factories import UserFactory
 
 
-class CreateUserTestCase(DoppelgangerGraphQLTestCase):
+class CreateUserTestCase(GraphQLTestCase):
     op_name = 'createUser'
     User = get_user_model()
     username = 'foobar'
@@ -76,7 +76,7 @@ class CreateUserTestCase(DoppelgangerGraphQLTestCase):
         })
 
 
-class UsersTestCase(DoppelgangerGraphQLTestCase):
+class UsersTestCase(GraphQLTestCase):
     op_name = 'users'
 
     def test_users_can_return_username(self):
@@ -130,7 +130,7 @@ class UsersTestCase(DoppelgangerGraphQLTestCase):
         return self.query(query, self.op_name)
 
 
-class ProtectedUsersTestCase(DoppelgangerJSONWebTokenTestCase):
+class ProtectedUsersTestCase(JSONWebTokenTestCase):
     op_name = 'protectedUsers'
 
     def setUp(self):

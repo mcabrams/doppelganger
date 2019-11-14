@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 
-from tests.helpers import DoppelgangerJSONWebTokenTestCase, no_permission_error
+from tests.helpers import JSONWebTokenTestCase, no_permission_error
 from question.tests.factories import (
     QuestionFactory, shared_answered_questions_factory,
 )
@@ -19,7 +19,7 @@ def fake_get_doppelganger_and_score(user_profile):
 
 @patch('comparison.schema.get_doppelganger_and_score',
        side_effect=fake_get_doppelganger_and_score)
-class ComputeDoppelgangerTestCase(DoppelgangerJSONWebTokenTestCase):
+class ComputeDoppelgangerTestCase(JSONWebTokenTestCase):
     op_name = 'computeDoppelganger'
 
     def test_will_error_if_not_logged_in(self, _):
@@ -103,7 +103,7 @@ class ComputeDoppelgangerTestCase(DoppelgangerJSONWebTokenTestCase):
         )
 
 
-class UserComparisonTestCase(DoppelgangerJSONWebTokenTestCase):
+class UserComparisonTestCase(JSONWebTokenTestCase):
     op_name = 'userComparison'
 
     def setUp(self):

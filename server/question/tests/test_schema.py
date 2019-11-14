@@ -1,7 +1,7 @@
 from graphql_relay import to_global_id
 import json
 
-from tests.helpers import DoppelgangerJSONWebTokenTestCase, no_permission_error
+from tests.helpers import JSONWebTokenTestCase, no_permission_error
 from user_profile.tests.factories import UserProfileFactory
 
 from .factories import AnswerFactory, AnsweredQuestionFactory, QuestionFactory
@@ -13,7 +13,7 @@ def result_to_dict(result):
     return json.loads(json.dumps(result))
 
 
-class QuestionsTestCase(DoppelgangerJSONWebTokenTestCase):
+class QuestionsTestCase(JSONWebTokenTestCase):
     op_name = 'questions'
 
     def test_questions_can_return_nested_answers(self):
@@ -133,7 +133,7 @@ class QuestionsTestCase(DoppelgangerJSONWebTokenTestCase):
         }])
 
 
-class CreateAnsweredQuestionTestCase(DoppelgangerJSONWebTokenTestCase):
+class CreateAnsweredQuestionTestCase(JSONWebTokenTestCase):
     op_name = 'createAnsweredQuestion'
 
     def setUp(self):
