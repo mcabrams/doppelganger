@@ -1,5 +1,5 @@
 # Doppelganger
-> TODO
+> Find somebody out there who is most like you.  Answer a series of questions and you will be presented with your doppelganger. 
 
 ## Development Setup
 
